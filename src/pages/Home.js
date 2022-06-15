@@ -1,16 +1,17 @@
-import Autions from "../components/Autions"
+import Auctions from "../components/auction/Auctions";
+import CustomFooter from "../components/CustomFooter";
 import Description from "../components/Description";
-import Header from "../components/Header"
+import Header from "../components/Header";
 
-const Home = () =>
-{
+const Home = () => {
     return (
         <div>
-            <Header/>
-            <Description/>
-            <Autions/>
+            <Header />
+            <Description />
+            <Auctions />
+            <CustomFooter/>
         </div>
     )
-    
+
 }
 export default Home;

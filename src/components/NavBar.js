@@ -1,32 +1,30 @@
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu } from 'antd';
+import { BellOutlined, HeartOutlined, LaptopOutlined, MoneyCollectOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import { Badge, Breadcrumb, Layout, Menu } from 'antd';
 import React from 'react';
+import MenuItem from './MenuItem';
 const { Header, Content, Footer, Sider } = Layout;
-const items1 = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
-const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
-  const key = String(index + 1);
-  return {
-    key: `sub${key}`,
-    icon: React.createElement(icon),
-    label: `subnav ${key}`,
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  };
-});
 
 const NavBar = () => (
   <Layout>
     <Header className="header">
-      <div className="logo" />
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={items1} />
+      <div className="logo" >
+       <span style={{color:'white'}}>Antique Auction</span>
+     
+      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} style={{float:'right',width:'500px'}}>
+        <Menu.Item>
+          <MenuItem icon ={BellOutlined} value ={"Notification"}/>
+        </Menu.Item>
+        <Menu.Item>
+        <MenuItem icon ={HeartOutlined} value ={"Interested"}/>
+          </Menu.Item>
+        <Menu.Item>
+        <MenuItem icon ={MoneyCollectOutlined} value ={"Your Bids"}/>
+          </Menu.Item>
+        <Menu.Item>
+        <MenuItem icon ={UserOutlined} value ={"Account"}/>
+      </Menu.Item>
+      </Menu>
+       </div>
     </Header>
   </Layout>
 );

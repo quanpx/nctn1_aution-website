@@ -1,0 +1,19 @@
+.auction-detail
+{
+    display: flex;
+    flex-direction: column;
+}
+.lot-items
+{
+    display: flex;
+    flex-direction: row;
+    gap: 10px 30px;
+    flex-flow: row wrap;
+    justify-content:first baseline;
+}
+.lot-info
+{
+    width: 30%;
+    height: 30%;
+    background-color: antiquewhite;
+}
