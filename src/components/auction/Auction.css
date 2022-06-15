@@ -1,0 +1,51 @@
+.auction-row{
+    margin-top: 10px;
+    background-color: aqua;
+}
+
+.auction-images
+{
+    display: flex;
+    flex-direction: row;
+    gap: 15%;
+    justify-content: center;
+  
+}
+.auction-info
+{
+    display: flex;
+    flex-direction: row;
+}
+.auction-detailt-info
+{
+    width: 90%;
+}
+.auction-time
+{
+    display: flex;
+    flex-direction: column;
+}
+.countdown-time
+{
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+    float:right;
+    align-items: center;
+}
+.auction-time-element
+{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+}
+.colon{
+  
+    margin-bottom: 10%;
+}
+.auction-time-buttons
+{
+    display: flex;
+    flex-direction: column;
+}
