@@ -87,9 +87,14 @@ const lotItems = [
 const LotList =  () =>
 {
     return (
-        <div className="lot-list">
+        <div>
+            <h2>Inprogress: 60%</h2>
+            <div className="lot-list">
+            
             {lotItems.map((lot,idx)=>(<LotInfo key={idx} lot={lot}/>))}
         </div>
+        </div>
+        
         
     )
 }
