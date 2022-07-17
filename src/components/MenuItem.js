@@ -1,3 +1,4 @@
+import React from 'react';
 const MenuItem = ({icon,value})=>
 {
     const Icon = icon;

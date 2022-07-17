@@ -1,4 +1,5 @@
 import { Image } from 'antd';
+import React from 'react';
 import "./Auction.css"
 const AuctionImage = () => (
     <div className='auction-images'>

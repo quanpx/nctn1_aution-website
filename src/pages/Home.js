@@ -1,3 +1,4 @@
+import React from 'react';
 import Auctions from "../components/auction/Auctions";
 import CustomFooter from "../components/CustomFooter";
 import Description from "../components/Description";

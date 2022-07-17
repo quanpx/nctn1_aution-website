@@ -1,4 +1,5 @@
 import BidList from "./BidList";
+import React from 'react';
 import "./StreamPage.css"
 const StreamVideo = ({ url }) => {
     return <div className="stream-video">

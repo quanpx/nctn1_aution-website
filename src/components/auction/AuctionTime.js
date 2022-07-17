@@ -1,3 +1,4 @@
+import React from "react";
 import "./Auction.css"
 import { useCountdown } from "../../hooks/useCountdown";
 

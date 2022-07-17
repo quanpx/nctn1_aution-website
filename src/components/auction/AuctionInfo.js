@@ -1,12 +1,13 @@
+import React from 'react';
 import AuctionDetailInfo from "./AuctionDetailInfo";
 import AuctionImage from "./AuctionImage";
 
-const AuctionInfo = () =>
+const AuctionInfo = ({auction}) =>
 {
     return (
         <div>
             <AuctionImage/>
-            <AuctionDetailInfo/>
+            <AuctionDetailInfo auction = {auction}/>
         </div>
     )
 }

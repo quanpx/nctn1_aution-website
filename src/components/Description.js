@@ -1,4 +1,5 @@
 import { Carousel } from 'antd';
+import React from 'react';
 const contentStyle = {
   height: '160px',
   color: '#fff',

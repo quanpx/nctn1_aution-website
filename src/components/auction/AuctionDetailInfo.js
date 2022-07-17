@@ -1,4 +1,5 @@
 import { Card } from "antd";
+import React from 'react';
 import "./Auction.css";
 import AuctionName from "./AuctionName";
 import AuctionTime from "./AuctionTime";

@@ -1,7 +1,9 @@
+import React from 'react';
 import { Col, Row } from 'antd';
 import Auction from './Auction';
 import './Auction.css';
 const AuctionRow = ({ items }) => {
+    console.log(items)
     return (
         <div className='aution-row'>
             <Row>

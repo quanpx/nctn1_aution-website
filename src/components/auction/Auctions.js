@@ -1,5 +1,7 @@
 import AuctionRow from "./AuctionRow";
-
+import React, { useEffect, useState } from 'react';
+import { ROOT_API } from "../../config/server";
+import axios from "axios";
 const autionsInitial = [
     {
         id: 1,
@@ -28,11 +30,28 @@ const autionsInitial = [
 ]
 
 const Auctions = () => {
+    const [data,setData]=useState(null);
+
+    useEffect(()=>
+    {
+      fetchData();
+    },[])
+
+    const fetchData = async () =>
+    {
+      await axios.get(ROOT_API+"auction")
+      .then(res=>res.data)
+      .then(data=>setData(data))
+      .catch(e=>console.log(e))
+    }
+   
+    console.log(data)
     return (
+        
         <div>
-            <AuctionRow key={1}  items ={autionsInitial} />
-            <AuctionRow  key={2} items ={autionsInitial}/>
-            <AuctionRow  key={3} items ={autionsInitial}/>
+            {data!=null? data.auctions.map((item,idx) => 
+                 <AuctionRow key={idx}  items ={data.auctions} />
+            ):<h1>Wait</h1>}
         </div>
     )
 };

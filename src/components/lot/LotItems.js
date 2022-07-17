@@ -1,3 +1,4 @@
+import React from 'react';
 import LotInfo from "./LotInfo";
 
 const LotItems = ({ lots }) => {

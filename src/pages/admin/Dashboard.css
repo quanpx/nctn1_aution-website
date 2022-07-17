@@ -1,0 +1,11 @@
+.dashboard
+{
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+}
+.admin-content
+{
+    margin-left: 20px;
+    margin-top: 10px;
+}

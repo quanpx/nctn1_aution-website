@@ -1,9 +1,13 @@
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu } from 'antd';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import AuctionInfo from '../components/auction/AuctionInfo';
 import Header from '../components/Header';
 import LotItems from '../components/lot/LotItems';
+import { ROOT_API } from '../config/server';
+
 const { Content, Footer, Sider } = Layout;
 const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
     const key = String(index + 1);
@@ -28,7 +32,7 @@ const lotItems = [
         name: "Lot 1",
         estm: "1000$",
         soldPrice: null,
-        sold:false
+        sold: false
     },
     {
         id: 2,
@@ -37,7 +41,7 @@ const lotItems = [
         name: "Lot 1",
         estm: "1000$",
         soldPrice: null,
-        sold:true
+        sold: true
     },
     {
         id: 3,
@@ -46,7 +50,7 @@ const lotItems = [
         name: "Lot 1",
         estm: "1000$",
         soldPrice: null,
-        sold:false
+        sold: false
     },
     {
         id: 4,
@@ -55,7 +59,7 @@ const lotItems = [
         name: "Lot 1",
         estm: "1000$",
         soldPrice: null,
-        sold:true
+        sold: true
     },
     {
         id: 5,
@@ -64,7 +68,7 @@ const lotItems = [
         name: "Lot 1",
         estm: "1000$",
         soldPrice: null,
-        sold:true
+        sold: true
     },
     {
         id: 6,
@@ -73,7 +77,7 @@ const lotItems = [
         name: "Lot 1",
         estm: "1000$",
         soldPrice: null,
-        sold:true
+        sold: true
     },
     {
         id: 7,
@@ -82,7 +86,7 @@ const lotItems = [
         name: "Lot 1",
         estm: "1000$",
         soldPrice: null,
-        sold:false
+        sold: false
     },
     {
         id: 8,
@@ -91,7 +95,7 @@ const lotItems = [
         name: "Lot 1",
         estm: "1000$",
         soldPrice: null,
-        sold:true
+        sold: true
     },
     {
         id: 9,
@@ -100,44 +104,61 @@ const lotItems = [
         name: "Lot 1",
         estm: "1000$",
         soldPrice: null,
-        sold:false
+        sold: false
     }
 ]
 
-const AuctionDetail = () => (
-    <Layout>
-        <Header />
-        <Content
-            style={{
-                padding: '0 50px',
-                margin:'0 50px 0 100px'
-            }}
-        >
-            <Layout
-                className="site-layout-background"
+const AuctionDetail = () => {
+    const [data, setData] = useState()
+    const params = useParams();
+    console.log(params)
+
+    useEffect(() => { fetchData() }, [])
+
+    const fetchData = async () => {
+        await axios.get(ROOT_API + "auction/" + params.id)
+            .then(res => res.data)
+            .then(data => setData(data))
+            .catch(e => console.log(e))
+    }
+    return (
+        <Layout>
+            <Header />
+            <Content
                 style={{
-                    padding: '24px 0',
+                    padding: '0 50px',
+                    margin: '0 50px 0 100px'
                 }}
             >
-                <Content
+                <Layout
+                    className="site-layout-background"
                     style={{
-                        padding: '0 24px',
-                        minHeight: 280,
+                        padding: '24px 0',
                     }}
-                >   
-                    <AuctionInfo/>
-                    <LotItems lots={lotItems} />
-                </Content>
-            </Layout>
-        </Content>
-        <Footer
-            style={{
-                textAlign: 'center',
-            }}
-        >
-            Ant Design ©2018 Created by Ant UED
-        </Footer>
-    </Layout>
-);
+                >
+                    <Content
+                        style={{
+                            padding: '0 24px',
+                            minHeight: 280,
+                        }}
+                    >
+                        {data != null ?
+                            <div>
+                                <AuctionInfo auction ={data.auction} />
+                                <LotItems lots={data.lots} />
+                            </div> : <h1>Wait a moment</h1>}
+                    </Content>
+                </Layout>
+            </Content>
+            <Footer
+                style={{
+                    textAlign: 'center',
+                }}
+            >
+                Ant Design ©2018 Created by Ant UED
+            </Footer>
+        </Layout>)
+}
+    ;
 
 export default AuctionDetail;

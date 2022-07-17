@@ -1,3 +1,4 @@
+import React from 'react';
 import { HeartOutlined } from '@ant-design/icons';
 import { Button, Card } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +7,7 @@ const { Meta } = Card;
 const Auction = ({ aution }) => {
   const navigate=useNavigate();
   const handleClick = ()=>{
-      navigate("/auction")
+      navigate("/auction/"+aution.id)
   }
   return(
     <Card 
@@ -24,7 +25,7 @@ const Auction = ({ aution }) => {
     >
       <Meta
         title={aution.type}
-        description={`${aution.lot} lots - ${aution.follow} followers`}
+        description={`${aution.num_item} lots - ${aution.register_num} followers`}
       />
 
       <Button><HeartOutlined key="heart" /> Follow this auction</Button>

@@ -1,5 +1,6 @@
 import LotInfo from "../lot/LotInfo"
 import "./StreamPage.css"
+import React from 'react';
 const lotItems = [
     {
         id: 1,
