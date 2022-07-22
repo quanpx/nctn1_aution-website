@@ -8,7 +8,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
 import { uploadImgae } from '../../firebase/firebase';
-import { async } from '@firebase/util';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
@@ -16,13 +16,43 @@ const CreateItem = () => {
   const [user,token,isAuth]=useAuth();
   const [file, setFile] = useState();
   const [form] = Form.useForm();
+  const [url,setUrl]=useState();
 
   const handleChange = (e) => {
     if (e.target.files[0]) {
-      setFile(e.target.files[0])
+      let file = e.target.files[0];
+      const storage = getStorage();
+      const storageRef = ref(storage, "images/" + file.name);
+      const uploadTask = uploadBytesResumable(storageRef, file)
+    
+      uploadTask.on('state_changed',
+        (snapshot) => { },
+        (error) => {
+          // A full list of error codes is available at
+          // https://firebase.google.com/docs/storage/web/handle-errors
+          switch (error.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
+            case 'storage/canceled':
+              // User canceled the upload
+              break;
+    
+            // ...
+    
+            case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        },
+        () => {
+          // Upload completed successfully, now we can get the download URL
+          getDownloadURL(uploadTask.snapshot.ref).then(downloadUrl => setUrl(downloadUrl));
+        })
+    
     }
-
   }
+
   const sendRequest = async (data) => {
     console.log(token)
     let url = ROOT_API + "lot";
@@ -31,7 +61,7 @@ const CreateItem = () => {
         "Authorization":"Bearer "+token,
         "Acept":"application/json"
     }
-    console.log(header)
+    console.log(header  )
     await axios.post(url, data, { headers: header })
       .then(res => console.log(res))
       .catch(err => console.log(err))
@@ -40,8 +70,8 @@ const CreateItem = () => {
   
   const onFinish = async (values)=>
   {
-    uploadImgae(file)
-    let body = {...values,image_url:file.name}
+    let body = {...values,image_url:url}
+    console.log(body);
     await sendRequest(body);
 
   }

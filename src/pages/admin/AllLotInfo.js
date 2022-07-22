@@ -1,139 +1,127 @@
 import { Button, Divider, Input, Radio, Table } from 'antd';
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ROOT_API } from '../../config/server';
+import { getImage } from '../../firebase/firebase';
+import { useAuth } from '../../hooks/useAuth';
 const columns = [
   {
     title: 'Name',
+    key:'name',
     dataIndex: 'name',
     render: (text) => <a>{text}</a>,
   },
   {
     title: 'Description',
+    key:'description',
     dataIndex: 'description',
   },
   {
     title: 'Init Price',
-    dataIndex: 'initPrice',
+    key:'current _price',
+    dataIndex: 'current_price',
   },
   {
     title: 'Estm Price',
-    dataIndex: 'estmPrice',
+    key:'estm_price',
+    dataIndex: 'estm_price',
   },
   ,
   {
     title: 'Start Time',
-    dataIndex: 'startTime',
+    key:'start_time',
+    dataIndex: 'start_time',
   },
-  
+
   {
     title: 'Is Sold',
-    dataIndex: 'isSold',
+    key:'is_sold',
+    dataIndex: 'is_sold',
   },
   {
     title: 'Sold Price',
-    dataIndex: 'soldPrice',
+    key:'sold_price',
+    dataIndex: 'sold_price',
   },
   {
     title: 'Session ID',
-    dataIndex: 'sessionId',
+    key:'session',
+    dataIndex: 'session',
+  
+  },
+  {
+    title: 'Image',
+    key:'image_url',
+    dataIndex: 'image_url',
+    render: (url,_,idex)=> {
+     return <img key={idex} src={url} width={50} height={50}/>
+    }
   },
 ];
-const data = [
-  {
-    key: '1',
-    id:1,
-    name: 'Lot 1',
-    description:"Description 1",
-    initPrice:300,
-    estmPrice:3000,
-    startTime:"2022-07-05T19:00",
-    isSold:false,
-    soldPrice:null,
-    sessionId:2
-
-  },
-  {
-    key: '2',
-    id:2,
-    name: 'Lot 2',
-    description:"Description 2",
-    initPrice:300,
-    estmPrice:3000,
-    startTime:"2022-07-05T19:00",
-    isSold:false,
-    soldPrice:null,
-    sessionId:2
-  },
-  {
-    key: '3',
-    id:3,
-    name: 'Lot 3',
-    description:"Description 3",
-    initPrice:300,
-    estmPrice:3000,
-    isSold:false,
-    soldPrice:null,
-    sessionId:null
-  },
-  {
-    key: '4',
-    id:4,
-    name: 'Lot 4',
-    description:"Description 4",
-    initPrice:300,
-    estmPrice:3000,
-    isSold:false,
-    soldPrice:null,
-    sessionId:null
-  },
-]; // rowSelection object indicates the need for row selection
-
 
 
 const AllLotInfo = () => {
-  const navigate= useNavigate();
-  const [selectionType, setSelectionType] = useState('checkbox');
-  const [isSelect,setIsSelect]=useState(false);
-  const [row,setRow]=useState([]);
+  const [user, token, isAuth] = useAuth();
+  const navigate = useNavigate();
+  const [isSelect, setIsSelect] = useState(false);
+  const [row, setRow] = useState([]);
+  const [data, setData] = useState(null);
+ 
+
+  useEffect(() => {
+    getAllLots();
+  }, [])
+
+  const getAllLots = async () => {
+    await axios.get(ROOT_API + "lot")
+      .then(res => res.data)
+      .then(dataRes =>{ 
+        let keyData = dataRes.lots.map((item,idx)=>({...item,key:idx}))
+        setData(keyData)
+      console.log(dataRes);})
+  }
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      if(selectedRows.length!=0)
-      {
+      if (selectedRows.length != 0) {
         setIsSelect(true);
-      }else
-      {
+      } else {
         setIsSelect(false)
       }
-     
+
       setRow(selectedRows);
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
     getCheckboxProps: (record) => ({
-      disabled: record.sessionId !== null,
+      disabled: record.session!== undefined,
       // Column configuration not to be checked
       name: record.name,
     }),
   };
-  const handleCreateAuction= (e) =>
-  {
+  const handleCreateAuction = (e,row) => {
     e.preventDefault();
-    navigate("/admin/createAuction",{state:data})
+    navigate("/admin/createAuction", { state: row })
 
   }
   return (
-    <div>
-     
-      <Divider />
 
-      <Table
-        rowSelection={{
-          type: selectionType,
-          ...rowSelection,
-        }}
-        columns={columns}
-        dataSource={data}
-      />
-       {isSelect && <Input type={"button"} value="Create Auction" onClick={handleCreateAuction}/>}
+    <div>
+
+      <Divider />
+      {data != null ? <div>
+        <Table
+          rowSelection={{
+            type: "checkbox",
+            ...rowSelection,
+          }}
+          columns={columns}
+          dataSource={data}
+        />
+        {isSelect && <Input type={"button"} value="Create Auction" onClick={(e)=>handleCreateAuction(e,row) } />}
+      </div> : <h1>Wait</h1>
+      }
+
     </div>
   );
 };
