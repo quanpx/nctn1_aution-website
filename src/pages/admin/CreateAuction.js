@@ -11,12 +11,15 @@ import {
   TreeSelect,
   Switch,
   Checkbox,
+  notification,
 } from 'antd';
 import DateTimePicker from 'react-datetime-picker';
 import { useLocation } from 'react-router-dom';
 import { sendPostRequest } from '../../utils/request';
 import { ROOT_API } from '../../config/server';
 import { useAuth } from '../../hooks/useAuth';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import { SmileOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
@@ -27,6 +30,8 @@ const CreateAuction = () => {
   const [lot, setLot] = useState([]);
   const [form] = Form.useForm();
   const [children,setChildren]=useState([]);
+  const [url,setUrl]=useState();
+
 
   useEffect(() => {
     let lotItems = location.state != null ? [...location.state] : [];
@@ -39,6 +44,40 @@ const CreateAuction = () => {
   // console.log(location.state);
   // lot.forEach(item => setChildren(prev=>[...prev,item.id]));
 
+  const handleChange = (e) => {
+    if (e.target.files[0]) {
+      let file = e.target.files[0];
+      const storage = getStorage();
+      const storageRef = ref(storage, "images/" + file.name);
+      const uploadTask = uploadBytesResumable(storageRef, file)
+    
+      uploadTask.on('state_changed',
+        (snapshot) => { },
+        (error) => {
+          // A full list of error codes is available at
+          // https://firebase.google.com/docs/storage/web/handle-errors
+          switch (error.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
+            case 'storage/canceled':
+              // User canceled the upload
+              break;
+    
+            // ...
+    
+            case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        },
+        () => {
+          // Upload completed successfully, now we can get the download URL
+          getDownloadURL(uploadTask.snapshot.ref).then(downloadUrl => setUrl(downloadUrl));
+        })
+    
+    }
+  }
   const toTimestamp = (strDate) => {
     const dt = Date.parse(strDate);
     return dt;
@@ -51,16 +90,43 @@ const CreateAuction = () => {
       name: form.getFieldValue("name"),
       start_time: startTimeStamp,
       description: form.getFieldValue("description"),
-      item_ids: children
+      item_ids: children,
+      image_url:url
     }
 
-    let url = ROOT_API + "auction";
+    let urlResource = ROOT_API + "auction";
     const header = {
         "Content-Type":"application/json",
         "Authorization":"Bearer "+token,
         "Acept":"application/json"
     }
-     await sendPostRequest(url,body,header);
+     await sendPostRequest(urlResource,body,header)
+     .then(res=>notification.open({
+      message: 'Create Success',
+          description:
+            'You have just added auction '+body.name,
+          icon: (
+            <SmileOutlined
+              style={{
+                color: '#108ee9',
+              }}
+            />
+          ),
+     }))
+     .catch(err=>{
+      notification.open({
+        message: 'Create Error',
+          description:
+            'Error add '+body.name,
+          icon: (
+            <SmileOutlined
+              style={{
+                color: '#108ee9',
+              }}
+            />
+          ),
+      })
+     })
   }
   
 
@@ -92,6 +158,9 @@ const CreateAuction = () => {
 
         </Select>
       </Form.Item>
+      <Form.Item label="Image">
+          <Input type={"file"} onChange={handleChange} />
+        </Form.Item>
       <Form.Item >
         <Button onClick={handleCreate}>Button</Button>
       </Form.Item>

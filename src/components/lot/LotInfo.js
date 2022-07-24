@@ -1,39 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import { HeartOutlined } from '@ant-design/icons';
+import { HeartOutlined, MoneyCollectOutlined } from '@ant-design/icons';
+import {useNavigate,Link} from 'react-router-dom'
+import { useSelector } from 'react-redux/es/exports';
+
 
 import { Card } from 'antd';
 import "./LotItems.css";
-import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import { useAuth } from '../../hooks/useAuth';
 const { Meta } = Card;
 const LotInfo = ({ lot }) => {
-    const [imageUrl,setImageUrl]=useState();
-
-    useEffect(()=>{
-        const storage = getStorage();
-        const starsRef = ref(storage, "images/"+lot.image_url);
-        getDownloadURL(starsRef)
-        .then((url) => {
-          // `url` is the download URL for 'images/stars.jpg'
-      
-          // This can be downloaded directly:
-          const xhr = new XMLHttpRequest();
-          xhr.responseType = 'blob';
-          xhr.onload = (event) => {
-            const blob = xhr.response;
-          };
-          xhr.open('GET', url);
-          xhr.send();
-      
-          // Or inserted into an <img> element
-          setImageUrl(url);
-        })
-        .catch((error) => {
-          // Handle any errors
-        });
-    },[])
+    const [user,token,isAuth]=useAuth();
+    const navigate = useNavigate()
+    const bids = useSelector((state)=>state.bid)
+    const handleLoveItem = (id)=>
+    {
+        if(!isAuth)
+        {
+            navigate("/login")
+        }
+        console.log(id);
+    }
+    const handleBidItem = (id) =>
+    {
+        if(!isAuth)
+        {
+            navigate("/login")
+        }else
+        {
+            navigate("/lot/"+id)
+        }
+       
+    }
+    const checkBidded= (id)=>{
+        console.log(bids);
+        return bids.includes(id);
+    }
     return (
         <div className="lot-info">
-            {imageUrl!=null?<Card
+            <Card
                 style={{
                     width: "100%",
                 }}
@@ -41,24 +45,32 @@ const LotInfo = ({ lot }) => {
                     <img
                         height="100"
                         alt="example"
-                        src={imageUrl}
+                        src={lot.image_url}
                     />
                 }
                 actions={lot.is_sold?[
                     <h4>Sold</h4>,
 
-                    <HeartOutlined key="ellipsis" />,
-                ]:[
+                    <HeartOutlined key="ellipsis" onClick={()=>handleLoveItem(lot.id)} />,
+                ]:checkBidded(lot.id)?
+                [
 
-                    <HeartOutlined key="ellipsis" />,
-                ]}
+                    <HeartOutlined key="ellipsis" onClick={()=>handleLoveItem(lot.id)}/>,
+                    <MoneyCollectOutlined key="bid" />,
+                  
+                ]: [
+                <HeartOutlined key="ellipsis" onClick={()=>handleLoveItem(lot.id)}/>,
+                <MoneyCollectOutlined key="bid" onClick={()=>handleBidItem(lot.id)} />,
+              
+            ]}
             >
                 <Meta
-                    title={lot.name}
+                    title={<Link to={"/lot/"+lot.id}>{lot.name}</Link>}
                     description={`Est. ${lot.estm_price}`}
                 />
                 <h5>{lot.current_price}</h5>
-            </Card>:<h1>Wait</h1>}
+                {checkBidded(lot.id)&&<h1>Bidded</h1>}
+            </Card>
         </div>
     )
 }

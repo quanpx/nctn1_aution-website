@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Button, DatePicker, Form,
-  Input, InputNumber
+  Input, InputNumber, notification
 } from 'antd';
 import { ROOT_API } from '../../config/server';
 import { useState } from 'react';
@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
 import { uploadImgae } from '../../firebase/firebase';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import { SmileOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
@@ -63,7 +64,20 @@ const CreateItem = () => {
     }
     console.log(header  )
     await axios.post(url, data, { headers: header })
-      .then(res => console.log(res))
+      .then(res =>{ console.log(res)
+        notification.open({
+          message: 'Create Success',
+          description:
+            'You have just added item '+data.name,
+          icon: (
+            <SmileOutlined
+              style={{
+                color: '#108ee9',
+              }}
+            />
+          ),
+        });
+      })
       .catch(err => console.log(err))
 
   }

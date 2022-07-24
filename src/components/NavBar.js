@@ -3,7 +3,7 @@ import { BellOutlined, HeartOutlined, MoneyCollectOutlined, UserOutlined } from 
 import { Layout, Menu } from 'antd';
 import { useState } from 'react';
 import MenuItem from './MenuItem';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
 
 const NavBar = () => {
@@ -28,18 +28,29 @@ const NavBar = () => {
     < Layout >
       <Header className="header">
         <div className="logo" >
-          <span style={{ color: 'white' }}>Antique Auction</span>
+          <span style={{ color: 'white' }}><Link to={"/"}>Antique Auction</Link></span>
 
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} style={{ float: 'right', width: '500px' }}>
-            <Menu.Item>
-              <MenuItem icon={BellOutlined} value={"Notification"} />
-            </Menu.Item>
-            <Menu.Item>
-              <MenuItem icon={HeartOutlined} value={"Interested"} />
-            </Menu.Item>
-            <Menu.Item>
-              <MenuItem icon={MoneyCollectOutlined} value={"Your Bids"} />
-            </Menu.Item>
+            {
+              auth&&
+              <>
+              <Menu.Item>
+                <MenuItem icon={BellOutlined} value={"Notification"} />
+              </Menu.Item>
+              <Menu.Item>
+               <Link to={"/loves"}> 
+               <MenuItem icon={HeartOutlined} value={"Interested"} />
+               </Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link to={"/bids"}>
+                <MenuItem icon={MoneyCollectOutlined} value={"Your Bids"} />
+                </Link>
+              </Menu.Item>
+  
+              </>
+            }
+           
             <Menu.SubMenu key="SubMenu" icon={<UserOutlined />} title={username != null ? username : "Account"}>
               {auth &&
                 <Menu.Item key="one" value="Profile" >

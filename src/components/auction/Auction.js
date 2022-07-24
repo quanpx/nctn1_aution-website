@@ -10,16 +10,17 @@ const Auction = ({ aution }) => {
       navigate("/auction/"+aution.id)
   }
   return(
-    <Card 
+    <Card className='auction-card'
      hoverable={true}
       style={{
-        width: 300,
+        width: 400,
+        height:300,
       }}
       onClick={handleClick}
       cover={
         <img height={90}
           alt="example"
-          src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+          src={aution.image_url}
         />
       }
     >

@@ -55,7 +55,7 @@ const columns = [
     key:'image_url',
     dataIndex: 'image_url',
     render: (url,_,idex)=> {
-     return <img key={idex} src={url} width={50} height={50}/>
+     return <img key={idex} src={url} width={100} height={100}/>
     }
   },
 ];

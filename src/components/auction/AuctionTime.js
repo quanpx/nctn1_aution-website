@@ -1,13 +1,22 @@
 import React from "react";
 import "./Auction.css"
 import { useCountdown } from "../../hooks/useCountdown";
+import { useSelector } from "react-redux";
 
-const startTime = new Date("2022-06-16T12:00:00Z");
+
 
 const AuctionTime = () =>
 {
+    const {currentAuction,registerAuctions} = useSelector((state)=>state.auction)
+
+    const startTime = new Date(currentAuction.start_time);
     const [days, hours, minutes, seconds] = useCountdown(startTime);
-    
+
+    const checkRegisteredAuction = (id)=>
+    {
+        console.log(registerAuctions);
+        return registerAuctions.includes(id);
+    }
     return (
         <div className="auction-time">
                 <h5>LIVE BIDDING STARTS IN:</h5>
@@ -33,8 +42,10 @@ const AuctionTime = () =>
                     </div>
                 </div>
                 <div className="auction-time-buttons">
-                    <button className="auction-time-button-register" >REGISTER FOR AUCTION</button>
-                    <button className="auction-time-button-register" >ADD TO CALENDAR</button>
+                {checkRegisteredAuction(currentAuction.id)?
+                 <button className="auction-time-button-register" >Registered!</button>:
+                 <button className="auction-time-button-register" >Register for auction</button>}
+                   
                 </div>
             </div>
     )

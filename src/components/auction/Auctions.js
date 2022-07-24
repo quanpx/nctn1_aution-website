@@ -2,6 +2,7 @@ import AuctionRow from "./AuctionRow";
 import React, { useEffect, useState } from 'react';
 import { ROOT_API } from "../../config/server";
 import axios from "axios";
+import Auction from "./Auction";
 const autionsInitial = [
     {
         id: 1,
@@ -47,10 +48,9 @@ const Auctions = () => {
    
     console.log(data)
     return (
-        
-        <div>
+        <div className="auction-list">
             {data!=null? data.auctions.map((item,idx) => 
-                 <AuctionRow key={idx}  items ={data.auctions} />
+                <Auction key={item.id} aution={item} />
             ):<h1>Wait</h1>}
         </div>
     )

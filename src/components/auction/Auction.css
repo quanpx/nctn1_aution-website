@@ -1,6 +1,7 @@
-.auction-row{
-    margin-top: 10px;
-    background-color: aqua;
+.auction-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .auction-images

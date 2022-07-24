@@ -7,118 +7,26 @@ import AuctionInfo from '../components/auction/AuctionInfo';
 import Header from '../components/Header';
 import LotItems from '../components/lot/LotItems';
 import { ROOT_API } from '../config/server';
+import { useDispatch, useSelector,useStore } from "react-redux";
+import { setAuction } from '../feature/auctionSlice';
 
 const { Content, Footer, Sider } = Layout;
-const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
-    const key = String(index + 1);
-    return {
-        key: `sub${key}`,
-        icon: React.createElement(icon),
-        label: `subnav ${key}`,
-        children: new Array(4).fill(null).map((_, j) => {
-            const subKey = index * 4 + j + 1;
-            return {
-                key: subKey,
-                label: `option${subKey}`,
-            };
-        }),
-    };
-});
-const lotItems = [
-    {
-        id: 1,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold: false
-    },
-    {
-        id: 2,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold: true
-    },
-    {
-        id: 3,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold: false
-    },
-    {
-        id: 4,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold: true
-    },
-    {
-        id: 5,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold: true
-    },
-    {
-        id: 6,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold: true
-    },
-    {
-        id: 7,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold: false
-    },
-    {
-        id: 8,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold: true
-    },
-    {
-        id: 9,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold: false
-    }
-]
 
 const AuctionDetail = () => {
     const [data, setData] = useState()
     const params = useParams();
+    const dispatch = useDispatch()
     console.log(params)
-
+   
     useEffect(() => { fetchData() }, [])
 
     const fetchData = async () => {
         await axios.get(ROOT_API + "auction/" + params.id)
             .then(res => res.data)
-            .then(data => setData(data))
+            .then(data => {
+                dispatch(setAuction({auction:data.auction}))
+                setData(data);
+            })
             .catch(e => console.log(e))
     }
     return (
