@@ -1,0 +1,25 @@
+@ROOT_URL = https://nctn-backend.herokuapp.com/api/
+@token = eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjU4NzQxNjE1LCJpYXQiOjE2NTg3Mzg2MTV9.Awwg5glqUxda-IOM3dY-2qok59AL40SqnXzvwu4YHRyt_-PONyt5DmFGb3ePQ8j8mQgghvs9c_CX-KwTVTN6rw
+### Sign Up
+POST {{ROOT_URL}}/signup HTTP/1.1
+content-type: application/json
+
+{
+    "username": "user",
+    "password": "crquan07",
+    "email":"quanbka00@gmail.com"
+}
+
+### Login
+POST https://nctn-backend.herokuapp.com/api/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "user",
+    "password": "crquan07"
+}
+
+POST  HTTP/1.1
+header name: header value
+
+content
