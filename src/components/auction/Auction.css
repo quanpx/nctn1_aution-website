@@ -1,4 +1,5 @@
 .auction-list{
+    margin-top: 50px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;

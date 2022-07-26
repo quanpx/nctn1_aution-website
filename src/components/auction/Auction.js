@@ -1,7 +1,7 @@
 import React from 'react';
 import { HeartOutlined } from '@ant-design/icons';
 import { Button, Card } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const { Meta } = Card;
 
 const Auction = ({ aution }) => {
@@ -10,7 +10,8 @@ const Auction = ({ aution }) => {
       navigate("/auction/"+aution.id)
   }
   return(
-    <Card className='auction-card'
+    <>
+     <Card className='auction-card'
      hoverable={true}
       style={{
         width: 400,
@@ -31,5 +32,9 @@ const Auction = ({ aution }) => {
 
       <Button><HeartOutlined key="heart" /> Follow this auction</Button>
     </Card>
+    <Link to={"/auction-stream/"+aution.id}><h5>Go to live</h5></Link>
+    </>
+   
+    
 )};
 export default Auction;

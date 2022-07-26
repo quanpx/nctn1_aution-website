@@ -20,10 +20,11 @@ function App() {
         <Route path='' element={<Home/>}/>
         <Route path='login' element={<Login/>}/>
         <Route path="bids" element={<YourBids/>}/>
+        <Route path="auction-stream/:id" element={<AuctionStream/>}/>
       </Route>
       <Route path="/auction/:id" element={<AuctionDetail/>}/>
       <Route path="/lot/:id" element={<LotDetail/>}/>
-      <Route path="/auction-stream" element={<AuctionStream/>}/>
+
       <Route path="admin" element={<Dashboard/>}>
         <Route path="createItem" element={<CreateItem/>}/>
         <Route path="createAuction" element={<CreateAuction/>}/>

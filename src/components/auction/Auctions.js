@@ -3,32 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ROOT_API } from "../../config/server";
 import axios from "axios";
 import Auction from "./Auction";
-const autionsInitial = [
-    {
-        id: 1,
-        type:"Furniture",
-        address: "Hanoi",
-        startTime: "19:00",
-        lot: 20,
-        follow:1000
-    },
-    {
-        id: 2,
-        type:"Painting",
-        address: "HoChiMinh",
-        startTime: "19:00",
-        lot: 50,
-        follow:1000
-    },
-    {
-        id: 3,
-        type:"Antique",
-        address: "Hanoi",
-        startTime: "19:00",
-        lot: 20,
-        follow:1000
-    }
-]
+import AuctionCard from "./AuctionCard";
 
 const Auctions = () => {
     const [data,setData]=useState(null);
@@ -50,7 +25,7 @@ const Auctions = () => {
     return (
         <div className="auction-list">
             {data!=null? data.auctions.map((item,idx) => 
-                <Auction key={item.id} aution={item} />
+                <AuctionCard key={item.id} auction={item} />
             ):<h1>Wait</h1>}
         </div>
     )

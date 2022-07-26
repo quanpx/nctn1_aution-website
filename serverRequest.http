@@ -19,7 +19,7 @@ content-type: application/json
     "password": "crquan07"
 }
 
-POST  HTTP/1.1
-header name: header value
-
-content
+### Create role
+POST {{ROOT_URL}}roles HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}

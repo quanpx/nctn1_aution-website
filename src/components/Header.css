@@ -1,0 +1,15 @@
+.header
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: blanchedalmond;
+}
+.nav
+{
+    min-width: 500px;
+    display: flex;
+    flex-direction: row;
+    background-color: blanchedalmond;
+    justify-content: space-between;
+}
