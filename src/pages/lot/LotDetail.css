@@ -1,12 +1,19 @@
 .main-content{
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 .lot-description{
-    min-width:500px
+    min-width:400px
 }
 .lot-basic-info{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.lot-action
+{
+    align-items: center;
+    justify-items: center;
 }

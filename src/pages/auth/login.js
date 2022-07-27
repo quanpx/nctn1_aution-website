@@ -3,9 +3,12 @@ import { ROOT_API } from '../../config/server';
 import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { setAuth } from '../../feature/authSlice';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onFinish = async (values) => {
     console.log('Success:', values);
     let url = ROOT_API+"login";
@@ -24,10 +27,11 @@ const Login = () => {
     .then(data=>
         {
           console.log(data);
-            localStorage.setItem("AUCTION_TOKEN",data.access_token);
-            localStorage.setItem("AUCTION_USER",data.name);
-            localStorage.setItem("IS_AUTH",true);
-
+            dispatch(setAuth(
+              {user:data.name,
+                isAuth:true,
+                token:data.access_token
+            }))
             if(data.role.includes("admin",0))
             {
               navigate("/admin")

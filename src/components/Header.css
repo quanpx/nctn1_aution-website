@@ -10,6 +10,18 @@
     min-width: 500px;
     display: flex;
     flex-direction: row;
-    background-color: blanchedalmond;
     justify-content: space-between;
+}
+.description
+{
+    margin-top: 25px;
+    padding-top: 10px;
+    max-width: 700px;
+    text-align: left;
+}
+.description h1
+{
+    font-size: 25px;
+    text-decoration: underline;
+
 }

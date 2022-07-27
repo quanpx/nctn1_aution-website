@@ -4,20 +4,13 @@ import "./Auction.css"
 const AuctionImage = () => (
     <div className='auction-images'>
         <div className='auction-image'>
-            <img width={200}
-                src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
+        <img src={process.env.PUBLIC_URL+"/anh1.jpg"} width={300}/>
         </div>
         <div className='aution-image'>
-            <img
-                width={200}
-                src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"
-            />
+        <img src={process.env.PUBLIC_URL+"/anh2.jpg"}  width={300}/>
         </div>
         <div className='aution-image'>
-            <img
-                width={200}
-                src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"
-            />
+        <img src={process.env.PUBLIC_URL+"/anh3.jpg"}  width={300}/>
         </div>
 
     </div>

@@ -13,12 +13,14 @@ import Login from './pages/auth/login';
 import LotDetail from './pages/lot/LotDetail';
 import YourBids from './pages/user/YourBids';
 import BasePage from './pages/BasePage';
+import Signup from './pages/auth/signup';
 function App() {
   return (
     <Routes>
       <Route path="/" element={<BasePage/>}>
         <Route path='' element={<Home/>}/>
         <Route path='login' element={<Login/>}/>
+        <Route path='signup' element={<Signup/>}/>
         <Route path="bids" element={<YourBids/>}/>
         <Route path="auction-stream/:id" element={<AuctionStream/>}/>
       </Route>

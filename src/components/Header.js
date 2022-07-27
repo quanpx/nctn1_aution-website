@@ -4,16 +4,19 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import MenuItem from './MenuItem';
 import "./Header.css";
+import { useAuth } from '../hooks/useAuth';
+import { useDispatch } from 'react-redux';
+import { resetAuth } from '../feature/authSlice';
 
 
 const Header = () => {
-    const auth = localStorage.getItem("IS_AUTH");
-    const username = localStorage.getItem("AUCTION_USER")
+    const [user,isAuth,token]=useAuth();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const menu = (
         <Menu
-          items={auth?[
+          items={isAuth?[
             {
               key: '1',
               label: (
@@ -31,13 +34,16 @@ const Header = () => {
               key: '1',
               label:  <Link to={"/login"}>Login</Link>
             },
+            {
+                key: '2',
+                label:  <Link to={"/signup"}>Signup</Link>
+              },
           ]}
         />
       );
     const handleLogout = () => {
-        localStorage.removeItem("AUCTION_TOKEN");
-        localStorage.removeItem("AUCTION_USER")
-        localStorage.removeItem("IS_AUTH")
+    
+        dispatch(resetAuth())
         navigate("/")
 
     }
@@ -53,7 +59,7 @@ const Header = () => {
 
             <Menu className="nav">
                 {
-                    auth &&
+                    isAuth &&
                     <>
                         <Menu.Item className='nav-item'>
                             <MenuItem icon={BellOutlined} value={"Notification"} />
@@ -76,12 +82,12 @@ const Header = () => {
                     <Dropdown overlay={menu}>
                         <a onClick={(e) => e.preventDefault()}>
                             <Space>
-                            <MenuItem icon={UserOutlined} value={username?username:"Account"} />
+                            <MenuItem icon={UserOutlined} value={user?user:"Account"} />
                                 <DownOutlined />
                             </Space>
                         </a>
                     </Dropdown>
-                    {auth ?
+                    {isAuth ?
                         <>
                             <Menu.Item key="one" value="Profile" >
                                 Profile

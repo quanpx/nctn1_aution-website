@@ -35,7 +35,8 @@ return (
             textAlign: 'center',
         }}
     >
-        Ant Design ©2018 Created by Ant UED
+       Nghien Cuu Tot Nghiep 1 
+       <h1>GVHD: ThS. Do Tuan Anh</h1>
     </Footer>
 </Layout>
 )

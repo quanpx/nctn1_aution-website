@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addBid } from "../../feature/bidSlice";
 import { addRegisterAuction } from "../../feature/auctionSlice";
 import PriceInput from "./PriceInput";
+import { Navigate, useNavigate } from "react-router-dom";
 const LotAction = ({ lot }) => {
     const [bid, setBid] = useState();
     const [user, token, isAuth] = useAuth();
@@ -18,11 +19,13 @@ const LotAction = ({ lot }) => {
     const startTime = new Date(lot.start_time);
     const [days, hours, minutes, seconds] = useCountdown(startTime);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const checkRegisteredAuction = (id) => {
         return registerAuctions.includes(id);
     }
     const onFinish = async ({price}) => {
+        
         console.log('Received values from form: ', price);
         let url = ROOT_API + "bid";
         const headers = {
@@ -65,6 +68,10 @@ const LotAction = ({ lot }) => {
     };
 
     const checkPrice = (_, value) => {
+        if(!isAuth)
+        {
+            navigate("/login")
+        }
         if (value.number > 0) {
             return Promise.resolve();
         }

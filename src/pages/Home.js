@@ -8,7 +8,11 @@ const Home = () => {
     return (
         <div>
             <Description />
+            <div style={{marginTop:'25px'}}>
+            <h1 style={{fontSize:'25px',textDecoration:'underline'}}>Auctions</h1>
             <Auctions />
+            </div>
+            
         </div>
     )
 
