@@ -21,41 +21,43 @@ import { addBid } from '../feature/bidSlice';
 const AuctionStream = () => {
     const params = useParams();
     const [user, token, isAuth] = useAuth();
-    const [eventSource,setEventSource]=useState(null);
-    const [lots,setLots]=useState([]);
-    const [currentLot,setCurrentLot]=useState();
+    const [eventSource, setEventSource] = useState(null);
+    const [lots, setLots] = useState([]);
+    const [currentLot, setCurrentLot] = useState();
     const [bids, setBids] = useState([]);
-    const [currentPrice,setCurrentPrice]=useState(null);
-    const {registerAuctions}= useSelector((state)=>state.auction)
+    const [currentPrice, setCurrentPrice] = useState(null);
+    const { registerAuctions } = useSelector((state) => state.auction)
     const [registered, setRegistered] = useState(false)
     const dispatch = useDispatch()
-     
+
     // eventSource.onopen((event)=>{
     //     console.log("Connect to server :"+event.name);
     // })
-    useEffect(()=>{
-        let eventSource=new EventSource(SSE_SUBSCRIBE_API);
-         eventSource.addEventListener("haveBid", (event) => {
+    useEffect(() => {
+        let eventSource = new EventSource(SSE_SUBSCRIBE_API);
+        eventSource.addEventListener("haveBid", (event) => {
+            setEventSource(eventSource)
             let data = JSON.parse(event.data);
-            setBids([data.message,...bids]);
+            console.log(data);
+            console.log(bids);
+            setBids((oldBids)=>[...oldBids,data.message]);
             setCurrentPrice(data.current_price)
-           setEventSource(eventSource)
-        
-      
-    })
-    },[]);
-    useEffect(()=>{
+          
+
+        })
+    }, [bids,currentPrice]);
+    useEffect(() => {
         fetchData();
-    },[])
-    useEffect(()=>{
-      console.log(lots);
+    }, [])
+    useEffect(() => {
+        console.log(lots);
         setCurrentLot(lots.at(2))
 
-    },[lots])
+    }, [lots])
 
-    useEffect(()=>{
-      checkRegistered()?setRegistered(true):setRegistered(false)
-  },[])
+    useEffect(() => {
+        checkRegistered() ? setRegistered(true) : setRegistered(false)
+    }, [])
 
     const fetchData = async () => {
         await axios.get(ROOT_API + "auction/" + params.id)
@@ -67,123 +69,132 @@ const AuctionStream = () => {
     }
 
 
- 
-  const checkRegistered = () =>
-  {
-      return registerAuctions.includes(params.id);
-  }
 
-  const onFinish = async ({price}) => {
-      console.log('Received values from form: ', price);
-      let url = ROOT_API + "bid";
-      const headers = {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + token,
-          "Acept": "application/json"
-      }
+    const checkRegistered = () => {
+        return registerAuctions.includes(params.id);
+    }
 
-      let body = {
-          lot_id: currentLot.id,
-          bid_price: price.number,
-          auction_id: currentLot.session
+    const onFinish = async ({ price }) => {
+        console.log('Received values from form: ', price);
+        let url = ROOT_API + "bid";
+        const headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token,
+            "Acept": "application/json"
+        }
 
-      }
-      await axios.post(url, body, { headers })
-          .then(res => {
+        let body = {
+            lot_id: currentLot.id,
+            bid_price: price.number,
+            auction_id: currentLot.session
 
-              dispatch(addBid({id:currentLot.id}))
-              notification.open({
-                  message: 'Bid Success',
-                  description:
-                      'Bid lot '  +currentLot.name+ " Success",
-                  icon: <CheckOutlined />,
-              });
+        }
+        console.log(body);
+        await axios.post(url, body, { headers })
+            .then(res => {
+
+                dispatch(addBid({ id: currentLot.id }))
+                notification.open({
+                    message: 'Bid Success',
+                    description:
+                        'Bid lot ' + currentLot.name + " Success",
+                    icon: <CheckOutlined />,
+                });
 
 
-          })
-          .catch(error => {
-              notification.open({
-                  message: 'Bid error',
-                 description:
-                     'Bid lot ' + currentLot.name + " got error: " + error,
-                  icon: <ExclamationCircleOutlined />,
-              });
-          })
+            })
+            .catch(error => {
+                notification.open({
+                    message: 'Bid error',
+                    description:
+                        'Bid lot ' + currentLot.name + " got error: " + error,
+                    icon: <ExclamationCircleOutlined />,
+                });
+            })
 
-  };
+    };
 
-  const checkPrice = (_, value) => {
-      if (value.number > 0) {
-          return Promise.resolve();
-      }
+    const checkPrice = (_, value) => {
+        if (value.number > 0) {
+            return Promise.resolve();
+        }
 
-      return Promise.reject(new Error('Price must be greater than zero!'));
-  };
+        return Promise.reject(new Error('Price must be greater than zero!'));
+    };
     return (
         <>
-        <div className='auction-stream'>
-            <div className="stream-video">
-        <div className="video">
-        <iframe width={500} height={300} src="https://youtube.com/embed/vS1j7VJ4DLc" />
-        </div>
-        {registered?
-                <Form
-                name="customized_form_controls"
-                layout="inline"
-                onFinish={onFinish}
-                initialValues={{
-                    price: {
-                        number: 0,
-                    },
-                }}
-            >
-                <Form.Item
-                    name="price"
-                    label="Price"
-                    rules={[
-                        {
-                            validator: checkPrice,
-                        },
-                    ]}
-                >
-                    <PriceInput />
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Bid
-                    </Button>
-                </Form.Item>
-            </Form>:<div className="register-button">
-            <Link to={"/auction/register"}>Register to sale</Link>
-        </div>
+            <div className='auction-stream'>
+                <div className="stream-video">
+                    <div className="video">
+                        <iframe width={500} height={300} src="https://youtube.com/embed/vS1j7VJ4DLc" />
+                    </div>
+                    <div style={{ display: 'flex',justifyContent:'space-between' }}>
+                        {currentPrice && <div className='current-info'>
+                            <h3>Current price:    {currentPrice}</h3>
+                        </div>}
+                        {registered ?
+                            <Form
+                                name="customized_form_controls"
+                                className='input-price'
+                                layout="inline"
+                                onFinish={onFinish}
+                                initialValues={{
+                                    price: {
+                                        number: 0,
+                                    },
+                                }}
+                            >
+                                <Form.Item
+                                    name="price"
+                                    label="Price"
+                                    rules={[
+                                        {
+                                            validator: checkPrice,
+                                        },
+                                    ]}
+                                >
+                                    <PriceInput />
+                                </Form.Item>
+                                <Form.Item>
+                                    <Button type="primary" htmlType="submit">
+                                        Bid
+                                    </Button>
+                                </Form.Item>
+                            </Form> : <div className="register-button">
+                                <Link to={"/auction/register"}>Register to sale</Link>
+                            </div>
 
-            }
-        {eventSource&&currentLot&&<BidList event={eventSource} lot ={currentLot} bids={bids} />}
-    </div>
-    {currentLot&&<div>
-    <Card
-    style={{
-      width: 500,
-    }}
-    cover={
-      <img
-      height={200}
-        alt="example"
-        src={currentLot.image_url}
-      />
-    }
-  >
-    <Meta
-      title={currentLot.name}
-      description={currentLot.description}
-    />
-  </Card>
-    </div>}
-    </div>
-    <div className='related-lot'>
-        {lots.length!=0&&<LotItems lots={lots}/>}
-    </div>
-    </>
+                        }
+                        
+                    </div>
+                    {eventSource && currentLot && <BidList event={eventSource} lot={currentLot} bids={bids} />}
+                </div>
+                
+                {currentLot && <div>
+                    <Card
+                        style={{
+                            width: 500,
+                        }}
+                        cover={
+                            <img
+                                height={200}
+                                alt="example"
+                                src={currentLot.image_url}
+                            />
+                        }
+                    >
+                        <Meta
+                            title={currentLot.name}
+                            description={currentLot.description}
+                        />
+                    </Card>
+                </div>}
+            </div>
+
+            <div className='related-lot'>
+                {lots.length != 0 && <LotItems lots={lots} />}
+            </div>
+        </>
 
     )
 }

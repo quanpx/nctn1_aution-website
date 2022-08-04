@@ -16,15 +16,12 @@ const BidList = ({ event,lot,bids }) => {
     const params=useParams();
     const {registerAuctions}= useSelector((state)=>state.auction)
     const [registered, setRegistered] = useState(false)
-
+    console.log(bids);
     return (
         <div className="bid-list" style={{ float: 'right' }}>
-            {bids.length!=0?<List
-                size="small"
-                bordered
-                dataSource={bids}
-                renderItem={(item,idx) => <List.Item key={idx}>{item}</List.Item>}
-            />:<div>No bids</div>}
+            {bids.length!=0?
+            bids.map((item,idx)=><h1>{item}</h1>)
+            :<div>No bids</div>}
          
         </div>
     )

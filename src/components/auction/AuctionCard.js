@@ -7,11 +7,21 @@ const AuctionCard = ({auction}) =>
     
     let time= moment(auction.start_time).format('MMMM Do YYYY, h:mm a');
     let hours=parseInt(moment.duration(moment(auction.start_time).diff(moment(new Date()))).asHours());
-   
+
+    const checkUpComing = () =>
+    {
+        return hours <= 10;
+    }
     return (
     <div className="auction-card">
        
+      
         <div className="auction-basic-info">
+        {checkUpComing()&&
+        <div className="auction-status">
+            <Link to={"/auction-stream/"+auction.id} style={{color:'red',fontSize:'18px'}}>Live</Link>
+        </div>
+        }
             <h1><Link to={"auction/"+auction.id}>{auction.name}</Link></h1>
             <h3>Scheduled closure date : {time}</h3>
             

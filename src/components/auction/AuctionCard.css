@@ -5,6 +5,8 @@
     display: flex;
     flex-direction: column;
     background-color:beige;
+    margin-top: 10px;
+    position: relative;
 }   
 .auction-basic-info
 {
@@ -34,4 +36,12 @@
 #num_item
 {
     padding: 10;
+}
+.auction-status
+{
+    position: absolute;
+    left:10 ;
+    color: red;
+    font:bold;
+    font-size: 15px;
 }

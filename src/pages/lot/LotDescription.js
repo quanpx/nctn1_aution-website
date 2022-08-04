@@ -5,7 +5,7 @@ const LotDescription = ({lot}) =>
     return (
         <div className="lot-description">
            <div className="lot-image" style={{textAlign:'center'}}>
-                <img src={lot.image_url} width={400} height={400}/>
+                <img src={lot.image_url} width={800} height={400}/>
            </div>
            <div className="lot-detail">
             <h2>Item detail</h2>

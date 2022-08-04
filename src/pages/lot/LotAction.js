@@ -15,6 +15,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 const LotAction = ({ lot }) => {
     const [bid, setBid] = useState();
     const [user, token, isAuth] = useAuth();
+    const bids = useSelector((state)=>state.bid)
     const { registerAuctions } = useSelector((state) => state.auction)
     const startTime = new Date(lot.start_time);
     const [days, hours, minutes, seconds] = useCountdown(startTime);
@@ -24,14 +25,27 @@ const LotAction = ({ lot }) => {
     const checkRegisteredAuction = (id) => {
         return registerAuctions.includes(id);
     }
+    const checkBidded= (id)=>{
+        console.log(bids);
+        return bids.includes(id);
+    }
     const onFinish = async ({price}) => {
-        
+        if(checkBidded(lot.id))
+        {
+            notification.open({
+                message: 'Bid warning',
+                description:
+                    'You have bided this lot! Wait until this auction start for next bid!',
+                icon: <CheckOutlined />,
+            });
+            return;
+        }
         console.log('Received values from form: ', price);
         let url = ROOT_API + "bid";
         const headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
-            "Acept": "application/json"
+            "Accept": "application/json"
         }
 
         let body = {
@@ -40,6 +54,7 @@ const LotAction = ({ lot }) => {
             auction_id: lot.session
 
         }
+        console.log(body);
         await axios.post(url, body, { headers })
             .then(res => {
 
