@@ -5,6 +5,7 @@ export const useAuth = () =>
     const token = localStorage.getItem("AUCTION_TOKEN");
     const user=localStorage.getItem("AUCION_USER");
     const isAuth=localStorage.getItem("IS_AUTH");
+    const role = localStorage.getItem("USER_ROLE")
 
-    return [user,token,isAuth];
+    return {user,token,isAuth,role};
 }

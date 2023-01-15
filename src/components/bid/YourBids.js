@@ -1,10 +1,9 @@
 import { Divider, Layout, Table } from "antd";
-import React, { useState } from "react";
-import { ROOT_API } from "../../config/server";
+import React, { useEffect, useState } from "react";
+import { BID_URL } from "../../config/server";
 import { useAuth } from "../../hooks/useAuth";
 import axios from 'axios'
-import { useEffect } from "react";
-import Header from "../../components/Header";
+
 const { Content, Footer } = Layout;
 const columns = [
     {
@@ -39,7 +38,7 @@ const columns = [
 ];
 
 const YourBids = () => {
-    const [user, token, isAuth] = useAuth();
+    const {token} = useAuth();
     const [data, setData] = useState(null);
 
     useEffect(() => {
@@ -53,11 +52,10 @@ const YourBids = () => {
             "Authorization": "Bearer " + token,
             "Acept": "application/json"
         }
-        await axios.get(ROOT_API + "bid", { headers })
+        await axios.get(BID_URL, { headers })
             .then(res => res.data)
             .then(dataRes => {
                 setData(dataRes.bids)
-                console.log(dataRes);
             })
     }
     return (

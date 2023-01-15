@@ -1,58 +1,55 @@
 import AuctionRow from "./AuctionRow";
 import React, { useEffect, useState } from 'react';
-import { ROOT_API } from "../../config/server";
 import axios from "axios";
 import Auction from "./Auction";
-const autionsInitial = [
-    {
-        id: 1,
-        type:"Furniture",
-        address: "Hanoi",
-        startTime: "19:00",
-        lot: 20,
-        follow:1000
-    },
-    {
-        id: 2,
-        type:"Painting",
-        address: "HoChiMinh",
-        startTime: "19:00",
-        lot: 50,
-        follow:1000
-    },
-    {
-        id: 3,
-        type:"Antique",
-        address: "Hanoi",
-        startTime: "19:00",
-        lot: 20,
-        follow:1000
-    }
-]
+import { AUCTION_URL } from "../../config/server";
+import { Pagination } from "antd";
+import "./Auction.css"
 
-const Auctions = () => {
-    const [data,setData]=useState(null);
+const hour = 100; // For check state of auction
 
-    useEffect(()=>
-    {
-      fetchData();
-    },[])
+const Auctions = ({ paging }) => {
+  const [data, setData] = useState(null);
 
-    const fetchData = async () =>
-    {
-      await axios.get(ROOT_API+"auction")
-      .then(res=>res.data)
-      .then(data=>setData(data))
-      .catch(e=>console.log(e))
-    }
-   
-    console.log(data)
-    return (
-        <div className="auction-list">
-            {data!=null? data.auctions.map((item,idx) => 
-                <Auction key={item.id} aution={item} />
-            ):<h1>Wait</h1>}
-        </div>
-    )
+  useEffect(() => {
+    fetchData();
+  }, [])
+
+  const fetchData = async () => {
+    await axios.get(AUCTION_URL)
+      .then(res => res.data)
+      .then(data => setData(data)
+      )
+      .catch(e => console.log(e))
+  }
+
+  const checkIsNew = (startTime) => {
+    let start = new Date(startTime).getTime()
+
+    let now = new Date().getTime()
+
+    let diff = (start - now) / (1000 * 60 * 60)
+
+    return diff < hour ? true : false
+  }
+
+  return (
+    <div >
+      {data != null ?
+        <div className='auction-list'>
+          {data.auctions.map((item, idx) => {
+            let handledItem = { ...item, is_new: checkIsNew(item.start_time) }
+            return <Auction key={idx} aution={handledItem} />
+          }
+          )}
+          {paging && <Pagination
+            style={{ marginTop: '15px' }}
+            defaultCurrent={1}
+            total={30}
+          />}
+        </div> : <h1>Wait</h1>}
+
+    </div>
+  )
 };
 export default Auctions;

@@ -2,7 +2,7 @@ import { Button, Divider, Input, Radio, Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ROOT_API } from '../../config/server';
+import { LOT_URL } from '../../config/server';
 import { getImage } from '../../firebase/firebase';
 import { useAuth } from '../../hooks/useAuth';
 const columns = [
@@ -62,7 +62,6 @@ const columns = [
 
 
 const AllLotInfo = () => {
-  const [user, token, isAuth] = useAuth();
   const navigate = useNavigate();
   const [isSelect, setIsSelect] = useState(false);
   const [row, setRow] = useState([]);
@@ -74,7 +73,7 @@ const AllLotInfo = () => {
   }, [])
 
   const getAllLots = async () => {
-    await axios.get(ROOT_API + "lot")
+    await axios.get(LOT_URL)
       .then(res => res.data)
       .then(dataRes =>{ 
         let keyData = dataRes.lots.map((item,idx)=>({...item,key:idx}))

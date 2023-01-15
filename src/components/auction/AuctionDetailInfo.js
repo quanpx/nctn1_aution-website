@@ -1,15 +1,39 @@
-import { Card } from "antd";
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import "./Auction.css";
 import AuctionName from "./AuctionName";
 import AuctionTime from "./AuctionTime";
+import {useParams} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import axios from "axios";
+import {AUCTION_URL} from "../../config/server";
+import {setAuction} from "../../feature/auctionSlice";
+
 const AuctionDetailInfo = () => {
+    const [data, setData] = useState(null)
+    const params = useParams();
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    const fetchData = async () => {
+        await axios.get(AUCTION_URL + "/" + params.id)
+            .then(res => res.data)
+            .then(data => {
+                setData(data);
+            })
+            .catch(e => console.log(e))
+    }
     return (
+
         <div className="auction-info">
-           
-            <AuctionName/>
-            <AuctionTime/>
+            {data != null ?
+                <>
+                    <AuctionName auction={data}/>
+                    <AuctionTime auction={data}/>
+                </> : <h1>Loaing</h1>}
         </div>
+
     )
 }
 export default AuctionDetailInfo;

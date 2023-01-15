@@ -1,1 +1,19 @@
-export const ROOT_API = "http://localhost:8000/api/"
+const ROOT_API = "http://localhost:8000/api/"
+
+export const LOGIN_URL = ROOT_API + "login";
+export const SIGNUP_URL = ROOT_API + "signup";
+
+export const LOT_URL = ROOT_API + "lot";
+
+export const AUCTION_URL = ROOT_API + "auction";
+
+export const UPDATE_AUCTION_STATUS = AUCTION_URL+"/updatestatus"
+
+export const BID_URL = ROOT_API + "bid";
+
+export const BID_IN_AUCTION = BID_URL+"/bidinauction";
+
+export const IS_BID = BID_URL+"/isbid";
+
+export const IS_REGISTERED_AUCTION = ROOT_API + "auction/isregistered";
+export const REGISTER_AUCTION = ROOT_API + "auction/register";

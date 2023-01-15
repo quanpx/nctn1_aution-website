@@ -1,0 +1,26 @@
+@import "./color.css";
+
+.description {
+    display: flex;
+    flex-direction: row;
+    padding-left: 10%;
+
+}
+
+.form-join {
+    
+    justify-content: center;
+    min-width: 30%;
+    align-self: center;
+    padding-bottom: 5%;
+
+    
+}
+.carousel {
+min-width: 60%;
+z-index: 5;
+}
+.menu {
+
+    width: 60%;
+}

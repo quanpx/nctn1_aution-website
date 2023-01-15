@@ -2,12 +2,11 @@ import React from 'react';
 import AuctionDetailInfo from "./AuctionDetailInfo";
 import AuctionImage from "./AuctionImage";
 
-const AuctionInfo = ({auction}) =>
-{
+const AuctionInfo = () => {
     return (
         <div>
-            <AuctionImage/>
-            <AuctionDetailInfo auction = {auction}/>
+            <AuctionImage />
+            <AuctionDetailInfo />
         </div>
     )
 }

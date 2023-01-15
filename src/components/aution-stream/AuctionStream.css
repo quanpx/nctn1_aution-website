@@ -1,0 +1,59 @@
+@import "../../pages/layout/color.css";
+.stream-page{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.upper-stream-page{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    flex-basis: 400px;
+}
+
+.stream-video-part{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+}
+.item-info-part {
+    display: flex;
+    flex-direction: column;
+    
+}
+.item-info-part .item-image{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+    align-self: center;
+}
+.item-info-part .item-image img{
+    width: 400px;
+    height: 300px;
+}
+.video-part {
+    padding: 10px 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.video-part .current-item-state{
+    box-sizing: border-box;
+    width: 100%;
+}
+.video-part .video-src{
+    align-items: flex-end;
+}
+
+
+
+
+.lower-stream-page{
+    max-width: 1300px;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    background-color: white;
+}

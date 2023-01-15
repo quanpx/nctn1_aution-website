@@ -3,10 +3,9 @@ const MenuItem = ({icon,value})=>
 {
     const Icon = icon;
     return (
-        <div>
+        <div className="nav-item">
             <Icon/>
-            &nbsp;
-            {value}
+            <span style={{'color':'white'}}>{value}</span>
         </div>
     )
 

@@ -16,7 +16,7 @@ import {
 import DateTimePicker from 'react-datetime-picker';
 import { useLocation } from 'react-router-dom';
 import { sendPostRequest } from '../../utils/request';
-import { ROOT_API } from '../../config/server';
+import { AUCTION_URL } from '../../config/server';
 import { useAuth } from '../../hooks/useAuth';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { SmileOutlined } from '@ant-design/icons';
@@ -24,7 +24,7 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const CreateAuction = () => {
-  const [user,token,isAuth]=useAuth();
+  const {token} = useAuth();
   const location = useLocation();
   const [value, onChange] = useState(new Date());
   const [lot, setLot] = useState([]);
@@ -35,15 +35,11 @@ const CreateAuction = () => {
 
   useEffect(() => {
     let lotItems = location.state != null ? [...location.state] : [];
-    console.log(lotItems);
     setLot(lotItems);
     let ids = lotItems.map(item=>item.id);
     setChildren(ids);
-    console.log(children);
-  }, [])
-  // console.log(location.state);
-  // lot.forEach(item => setChildren(prev=>[...prev,item.id]));
 
+  }, [])
   const handleChange = (e) => {
     if (e.target.files[0]) {
       let file = e.target.files[0];
@@ -94,13 +90,12 @@ const CreateAuction = () => {
       image_url:url
     }
 
-    let urlResource = ROOT_API + "auction";
     const header = {
         "Content-Type":"application/json",
         "Authorization":"Bearer "+token,
         "Acept":"application/json"
     }
-     await sendPostRequest(urlResource,body,header)
+     await sendPostRequest(AUCTION_URL,body,header)
      .then(res=>notification.open({
       message: 'Create Success',
           description:

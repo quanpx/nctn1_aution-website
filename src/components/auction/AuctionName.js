@@ -2,7 +2,7 @@ import React from 'react';
 import "./Auction.css"
 import { useSelector } from 'react-redux';
 const AuctionName = () => {
-    const {currentAuction} = useSelector((state)=>state.auction)
+    const { currentAuction } = useSelector((state) => state.auction)
 
     return (
         <div className="auction-detail-info">

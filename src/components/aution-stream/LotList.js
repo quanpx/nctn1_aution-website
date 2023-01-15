@@ -1,102 +1,36 @@
 import LotInfo from "../lot/LotInfo"
 import "./StreamPage.css"
 import React from 'react';
-const lotItems = [
-    {
-        id: 1,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold:false
-    },
-    {
-        id: 2,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold:true
-    },
-    {
-        id: 3,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold:false
-    },
-    {
-        id: 4,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold:true
-    },
-    {
-        id: 5,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold:true
-    },
-    {
-        id: 6,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold:true
-    },
-    {
-        id: 7,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold:false
-    },
-    {
-        id: 8,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold:true
-    },
-    {
-        id: 9,
-        currentPrice: 100,
-        lotNumber: 1,
-        name: "Lot 1",
-        estm: "1000$",
-        soldPrice: null,
-        sold:false
-    }
-]
 
-const LotList =  () =>
-{
+const LotList = ({lots, title, next}) => {
+
+    let lotsTemp = lots.map(lot => {
+            return {
+                ...lot,
+                is_next: lot.order_in_lot === next
+            }
+        }
+    ).sort(compare)
+
+    function compare( a, b ) {
+        if ( a.is_next < b.is_next ){
+            return 1;
+        }
+        if ( a.is_next > b.is_next ){
+            return -1;
+        }
+        return 0;
+    }
     return (
-        <div>
-            <h2>Inprogress: 60%</h2>
+        <div style={{marginTop: '5%'}}>
+            <h1>{title}</h1>
             <div className="lot-list">
-            
-            {lotItems.map((lot,idx)=>(<LotInfo key={idx} lot={lot}/>))}
+
+                {lotsTemp.map((lot, idx) => (<LotInfo key={idx} lot={lot}/>))}
+            </div>
         </div>
-        </div>
-        
-        
+
+
     )
 }
 export default LotList;

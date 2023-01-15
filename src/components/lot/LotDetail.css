@@ -1,0 +1,23 @@
+.main-content{
+    display: flex;
+    flex-direction: row;
+}
+.lot-description{
+    max-width:65%;
+}
+/*.lot-basic-info{*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    justify-content: space-between;*/
+/*}*/
+.lot-action {
+    display: flex;
+    flex-direction: column;
+}
+.lot-action .lot-info{
+}
+.lot-action .bid-action {
+    position: relative;
+    top: 20%;
+    max-height: 500px;
+}
