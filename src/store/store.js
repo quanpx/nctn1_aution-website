@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import auction from "../feature/auctionSlice";
-import bid from "../feature/bidSlice"
+import auction from "../hooks/slices/auctionSlice";
+import bid from "../hooks/slices/bidSlice";
+import user from "../hooks/slices/userSlice";
 
 const reducer = combineReducers({
     auction,
-    bid
+    bid,
+    user,
 })
 export default configureStore({
     reducer,

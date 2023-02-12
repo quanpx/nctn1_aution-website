@@ -95,7 +95,7 @@ const LotAction = ({lot}) => {
 
     }
     const onAuctionStarted = () => {
-        if(auctionStatus === 'started')
+        if(auctionStatus === 'start')
         {
             return <p>Go to live: <Link to={generateStreamLink()}>Live</Link></p>
         }else {

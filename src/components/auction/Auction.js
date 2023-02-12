@@ -11,26 +11,25 @@ const Auction = ({ aution }) => {
     navigate("/auction/" + aution.id);
   };
   return (
-    <div className="auction">
+    <div className="relative">
       {aution.is_new ? <h1 className="status">New</h1> : <h1> </h1>}
 
       <Card
-        className="auction-card"
         hoverable={true}
         style={{
-          width: 270,
-          height: 320,
+          width: 240,
+          height: 360,
         }}
         onClick={handleClick}
-        cover={<img height={200} alt={aution.name} src={aution.image_url} />}
+        cover={<img height={150} alt={aution.name} src={aution.image_url} />}
       >
         <Meta
           title={aution.name}
           description={`${aution.num_item} lots - ${aution.register_num} followers`}
         />
 
-        <Button style={{ position: "absolute", bottom: 6, left: 26, backgroundColor: 'rgb(0, 97, 127)' }}>
-          <HeartOutlined style={{ color: 'white' }} key="heart" /> <span style={{ color: 'white', fontWeight: 'bold' }}>Follow this auction</span>
+        <Button className="absolute bottom-0 right-1 bg-cyan-800 mt-2">
+          <HeartOutlined key="heart" /> <span className="text-red-500">Follow this auction</span>
         </Button>
       </Card>
     </div>

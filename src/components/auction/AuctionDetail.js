@@ -5,7 +5,7 @@ import {useParams} from 'react-router-dom';
 import AuctionInfo from './AuctionInfo';
 import LotItems from '../lot/LotItems';
 import {useDispatch} from "react-redux";
-import {setAuction} from '../../feature/auctionSlice';
+import {setAuction} from '../../hooks/slices/auctionSlice';
 import {AUCTION_URL} from '../../config/server';
 
 const { Content, Footer, Sider, Header } = Layout;

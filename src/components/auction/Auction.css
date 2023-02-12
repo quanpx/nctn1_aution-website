@@ -19,16 +19,6 @@
     100% { color: #F8CD0A;  } 
 } 
 
-.auction-list
-{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 5%;
-    position: relative;
-    left: 3%;
-    top:15px;
-}
 .auction {
     position: relative;
 }

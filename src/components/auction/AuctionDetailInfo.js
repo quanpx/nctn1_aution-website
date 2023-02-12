@@ -6,7 +6,7 @@ import {useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import axios from "axios";
 import {AUCTION_URL} from "../../config/server";
-import {setAuction} from "../../feature/auctionSlice";
+import {setAuction} from "../../hooks/slices/auctionSlice";
 
 const AuctionDetailInfo = () => {
     const [data, setData] = useState(null)

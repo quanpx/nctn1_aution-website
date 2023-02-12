@@ -4,29 +4,36 @@ import Auctions from "../components/auction/Auctions";
 import Description from "./layout/Description";
 import LotItems from '../components/lot/LotItems';
 import { LOT_URL } from '../config/server';
+import AuctionDemo from '../components/auction/AuctionDemo';
 
 const Home = () => {
-    const [lots,setLots] = useState([])
-
-    useEffect( () => {
+    const [lots, setLots] = useState([])
+    const [loading,setLoading] = useState(true)
+    useEffect(() => {
         getAllLots()
-    },[])
+    }, [])
     const getAllLots = async () => {
-        await axios.get(LOT_URL)
-          .then(res => res.data)
-          .then(dataRes =>{ 
-            let keyData = dataRes.lots.slice(0,8);
-            setLots(keyData)
-            console.log(dataRes);
-        })
-      }
+
+        try {
+            const { data } = await axios.get(LOT_URL, { params: { size: 8 } })
+            setLots(data.lots)
+            setLoading(false)
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
     return (
-        <div>
+        <>
+        {!loading ? <div className='flex flex-col'>
             <Description />
-            <h2 style={{marginTop:'20px'}}>Featured Auctions <a style={{color:'brown',fontSize:'14px'}} href='#'><span>See All</span></a></h2> 
-            <Auctions paging={false} />
-            <LotItems lots = {lots}/>
-        </div>
+            <h2 className='text-base text-red-800 mt-5 p-2'> Featured Auctions <a href='/auctions'><span>See All</span></a></h2>
+            <AuctionDemo />
+            <h2 className='text-base text-red-800 mt-5 p-2'> All lots</h2>
+            <LotItems lots={lots} />
+        </div>: <h1>Loading...</h1>}
+        </>
+        
     )
 
 }

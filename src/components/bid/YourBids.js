@@ -21,6 +21,9 @@ const columns = [
         title: 'Bid price',
         key: 'bid_price',
         dataIndex: 'bid_price',
+        render: (text) => {
+            return <p> {text} $</p>;
+        }
     },
     {
         title: 'Status',
@@ -47,14 +50,22 @@ const YourBids = () => {
 
     const getAllBids = async () => {
 
-        const headers = {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token,
-            "Acept": "application/json"
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token,
+                "Acept": "application/json"
+            },
+            params: {
+                status: 'won'
+            }
+            
         }
-        await axios.get(BID_URL, { headers })
+      
+        await axios.get(BID_URL,config)
             .then(res => res.data)
             .then(dataRes => {
+               
                 setData(dataRes.bids)
             })
     }
@@ -65,11 +76,9 @@ const YourBids = () => {
                     <div>
                         <Divider />
                         <Table
-                            rowSelection={{
-                                type: "checkbox",
-                            }}
                             columns={columns}
                             dataSource={data}
+                            rowKey={record=>record.id}
                         />
 
 

@@ -5,8 +5,8 @@ import { Button } from "antd";
 import axios from "axios";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
-import {useAuth} from "../../hooks/useAuth";
-import {AUCTION_URL, UPDATE_AUCTION_STATUS} from "../../config/server";
+import { useAuth } from "../../hooks/useAuth";
+import { AUCTION_URL, UPDATE_AUCTION_STATUS } from "../../config/server";
 
 const constraints = {
     audio: false,
@@ -27,17 +27,18 @@ let serverURL = "http://localhost:5000"
 const USER = "user"
 const ADMIN = "admin"
 
-const StreamVideo = ({socket}) => {
+const StreamVideo = ({auction, eventSource, socket }) => {
     const [isStart, setIsStart] = useState(true)
     const [isJoined, setIsJoined] = useState(false)
     const [peopleWatching, setPeopleWatching] = useState(0)
     const [started, setStarted] = useState(false)
     const [startable, setStartable] = useState(false)
-    const {role} = useAuth();
+    const [status,setStatus] = useState('')
+    const { role } = useAuth();
     const videoRef = useRef()
     const rtcPeerConnection = useRef()
-    const {id} = useParams();
-    const {token} = useAuth();
+    const { id } = useParams();
+    const { token } = useAuth();
 
     const configs = {
         headers: {
@@ -51,12 +52,27 @@ const StreamVideo = ({socket}) => {
 
         socket.on('num-join', function (data) {
             setPeopleWatching(data.active)
-          })
-        
-          socket.on('join', (data) => {
+        })
+
+        socket.on('join', (data) => {
             setIsJoined(data.joined)
-          })
-      
+        })
+
+        socket.on("end", (data) => {
+            console.log("end");
+            rtcPeerConnection.current.close()
+            rtcPeerConnection.current.onicecandidate = null;
+            rtcPeerConnection.current.onaddstream = null;
+
+            videoRef.current.srcObject = null;
+        })
+        eventSource.addEventListener('auction-update', (event) => {
+            const data = JSON.parse(event.data)
+            console.log(data);
+            setStatus(data.status)
+            data.status === "start" ? setStarted(true) : setStarted(false)
+        })
+
         // Create a peer connection on local end point
         let _pc = new RTCPeerConnection(iceServers)
 
@@ -93,9 +109,11 @@ const StreamVideo = ({socket}) => {
         }
 
         rtcPeerConnection.current = _pc
+        setAuctionStatus()
 
         return () => {
             socket.emit('leave')
+            setIsJoined(false)
         }
 
     }, [])
@@ -114,6 +132,11 @@ const StreamVideo = ({socket}) => {
             .catch(error => console.log("Can't access media device"))
 
     }
+
+    const setAuctionStatus = () => {
+        setStatus(auction.status)
+        auction.status === "start"? setStarted(true): setStarted(false)
+    }
     const handleStart = async (e) => {
 
         e.preventDefault()
@@ -122,10 +145,9 @@ const StreamVideo = ({socket}) => {
             status: "start"
         }
         try {
-            await axios.post(UPDATE_AUCTION_STATUS,body,configs)
-            setStarted(true)
+            await axios.post(UPDATE_AUCTION_STATUS, body, configs)
         }
-        catch (error){
+        catch (error) {
             console.log(error)
         }
 
@@ -150,9 +172,58 @@ const StreamVideo = ({socket}) => {
         const desc = new RTCSessionDescription(data.sdp);
         rtcPeerConnection.current.setRemoteDescription(desc)
             .catch(e => console.log(e));
-        
+
         socket.emit('join')
+        setIsJoined(true)
     }
+    const handleEnd = async () => {
+
+        const body = {
+            id,
+            status: "end"
+        }
+        try {
+            await axios.post(UPDATE_AUCTION_STATUS, body, configs)
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+                    
+                    stream.getTracks().forEach(track => {
+                        console.log(track);
+                        track.stop()
+                    })
+                })
+                .catch(error => console.log("Can't access media device"))
+        }
+        catch (error) {
+            console.log(error)
+        }
+
+        socket.emit("end");
+    }
+    const resolveStreamFunction = () => {
+        console.log(status);
+        if (role === "admin") {
+            return <>
+                <Button type="" onClick={getMediaDevices} disabled={!startable || auction.status ==='end'}>Open Camera</Button>
+                <Button type="" onClick={handleStart} disabled={!startable || auction.status ==='end'}>Start Stream</Button>
+                <Button type="" onClick={handleEnd} disabled={!startable || auction.status ==='end'}>End Stream</Button>
+            </>
+        } else if (role === "user") {
+            if (status === 'start') {
+                return <>
+                    <h3><i>The auction has started. You can join now!</i></h3>
+                     <Button type="" onClick={handleJoin} disabled={isJoined}>{isJoined ? 'Joined' : 'join Stream'}</Button>
+                </>
+            }else if(status === 'end')
+            {
+                return <h3><i>The auction finished! Waiting for next auction!</i></h3>
+            }
+             else {
+                return <h3><i>The auction is not started! Waiting for auction start</i></h3>
+            }
+        }
+    }
+
     return (
         <div className="stream-video">
             {started && <span>Watching: {peopleWatching}</span>}
@@ -160,10 +231,7 @@ const StreamVideo = ({socket}) => {
                 <video ref={videoRef} width={250} height={220} />
             </div>
             <div className="stream-function">
-                {role == ADMIN && <Button type="" onClick={getMediaDevices}>Open Camera</Button>}
-                {role == ADMIN && <Button type="" onClick={handleStart} disabled={!startable}>Start Stream</Button>}
-
-                {role == USER && <Button type="" onClick={handleJoin} disabled={!isStart}>Join Stream</Button>}
+                {resolveStreamFunction()}
 
 
             </div>

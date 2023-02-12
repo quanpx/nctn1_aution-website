@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {BellOutlined, HeartOutlined, HomeOutlined, MoneyCollectOutlined, UserOutlined,} from "@ant-design/icons";
 import {Badge, Button, Menu, Popover} from "antd";
 import "./Common.css";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const url = "http://localhost:8000/api/sse/subscribe"
 let source  = new EventSource(url);
@@ -90,7 +90,7 @@ const NavBar = () => {
             icon: <HeartOutlined/>,
         },
         {
-            label: 'Your bids',
+            label: <Link to={'/your-items'}>Your items</Link> ,
             key: 'bid',
             icon: <MoneyCollectOutlined/>,
         },
@@ -110,7 +110,6 @@ const NavBar = () => {
         }
     ];
     const onClick = (e) => {
-        console.log('click ', e);
         setCurrent(e.key);
     };
     return (

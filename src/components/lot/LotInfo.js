@@ -12,7 +12,7 @@ const { Meta } = Card;
 const LotInfo = ({ lot }) => {
     const {isAuth} = useAuth();
     const navigate = useNavigate()
-    const bids = useSelector((state) => state.bid)
+    //const bids = useSelector((state) => state.bid)
     const handleLoveItem = (id) => {
         if (!isAuth) {
             navigate("/login")
@@ -27,11 +27,10 @@ const LotInfo = ({ lot }) => {
 
     }
     const checkBidded = (id) => {
-        return bids.includes(id);
+        return false;
     }
     return (
-        <div className="lot-info">
-            {lot.is_next ? <h1 >Next</h1>:<h1></h1>}
+        <div className='w-1/4'>
             <Card
                 style={{
                     width: "90%",
@@ -43,28 +42,29 @@ const LotInfo = ({ lot }) => {
                         src={lot.image_url}
                     />
                 }
-                actions={lot.is_sold ? [
-                    <h4>Sold</h4>,
+                // actions={lot.is_sold &&[
+                //     <h4>Sold: {lot.sold_price}$</h4>,]
+                // ] : checkBidded(lot.id) ?
+                //     [
 
-                    <HeartOutlined key="ellipsis" onClick={() => handleLoveItem(lot.id)} />,
-                ] : checkBidded(lot.id) ?
-                    [
+                //         <HeartOutlined key="ellipsis" onClick={() => handleLoveItem(lot.id)} />,
+                //         <MoneyCollectOutlined key="bid" />,
 
-                        <HeartOutlined key="ellipsis" onClick={() => handleLoveItem(lot.id)} />,
-                        <MoneyCollectOutlined key="bid" />,
+                //     ] : [
+                //         <HeartOutlined key="ellipsis" onClick={() => handleLoveItem(lot.id)} />,
+                //         <MoneyCollectOutlined key="bid" onClick={() => handleBidItem(lot.id)} />,
 
-                    ] : [
-                        <HeartOutlined key="ellipsis" onClick={() => handleLoveItem(lot.id)} />,
-                        <MoneyCollectOutlined key="bid" onClick={() => handleBidItem(lot.id)} />,
-
-                    ]}
+                //     ]}
+               // }
             >
                 <Meta
                     title={<Link to={"/lot/" + lot.id}>{lot.name}</Link>}
                     description={`Est. ${lot.estm_price}`}
                 />
-                <h5>{lot.current_price}</h5>
+                <h3>Curr price: {lot.current_price}</h3>
+                {lot.is_sold &&<h4>Sold: {lot.sold_price}$</h4>}
                 {checkBidded(lot.id) && <h1>Bidded</h1>}
+                {lot.is_next ? <h1 id="next-title">Next</h1>:<h1></h1>}
             </Card>
         </div>
     )

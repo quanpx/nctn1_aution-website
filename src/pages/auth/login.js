@@ -4,8 +4,12 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
+import { useDispatch } from "react-redux";
+import userSlice from "../../hooks/slices/userSlice";
+import { login } from "../../hooks/slices/userSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const onFinish = async (values) => {
     await axios
@@ -19,6 +23,14 @@ const Login = () => {
       })
       .then((res) => res.data)
       .then((data) => {
+        const userState = {
+          name: data.name,
+          token: data.access_token,
+          isAuth: true
+        }
+
+        dispatch(login(userState))
+        
         localStorage.setItem("AUCTION_TOKEN", data.access_token);
         localStorage.setItem("AUCTION_USER", data.name);
         localStorage.setItem("IS_AUTH", true);

@@ -5,6 +5,8 @@ export const SIGNUP_URL = ROOT_API + "signup";
 
 export const LOT_URL = ROOT_API + "lot";
 
+export const LOT_MARK_AS_SOLD = LOT_URL +"/sold";
+
 export const AUCTION_URL = ROOT_API + "auction";
 
 export const UPDATE_AUCTION_STATUS = AUCTION_URL+"/updatestatus"
@@ -17,3 +19,4 @@ export const IS_BID = BID_URL+"/isbid";
 
 export const IS_REGISTERED_AUCTION = ROOT_API + "auction/isregistered";
 export const REGISTER_AUCTION = ROOT_API + "auction/register";
+export const REGISTERED_AUCTION = ROOT_API + "auction/register_auctions";

@@ -14,6 +14,7 @@ import LotDetail from './components/lot/LotDetail';
 import YourBids from './components/bid/YourBids';
 import BasePage from './pages/layout/BasePage';
 import SignUp from './pages/auth/signup';
+import Auctions from './components/auction/Auctions';
 function App() {
   return (
     <Routes>
@@ -21,7 +22,8 @@ function App() {
         <Route path='' element={<Home/>}/>
         <Route path='login' element={<Login/>}/>
         <Route path='signup' element={<SignUp/>}/>
-        <Route path="bids" element={<YourBids/>}/>
+        <Route path="your-items" element={<YourBids/>}/>
+        <Route path="auctions" element={<Auctions/>}/>
         <Route path="auction/:id" element={<AuctionDetail/>}/>
         <Route path="lot/:id" element={<LotDetail/>}/>
         <Route path="auction-stream/:id" element={<AuctionStream/>}/>

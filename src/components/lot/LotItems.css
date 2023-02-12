@@ -18,3 +18,10 @@
     margin-top: 10px;
     width: 20%;
 }
+
+#next-title{
+    position: absolute;
+    color: rgb(180, 238, 6);
+    top:0px;
+    left: 10px;
+}
