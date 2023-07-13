@@ -1,11 +1,63 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import LotInfo from "./LotInfo";
 import "./LotItems.css"
+import { useAuth } from '../../hooks/useAuth';
+import { useFetchFavoritesQuery } from '../../hooks/apis/favoriteApi';
+import axios from 'axios';
+import { FAVORITE } from '../../config/server';
 const LotItems = ({ lots }) => {
+    const { token,isAuth } = useAuth()
+    const [favorites,setFavorites] = useState(null)
+    const [modifiedItems,setModifiedItems] = useState([])
+    let favoritedIds = useRef([])
 
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token,
+            "Acept": "application/json"
+        }
+    }
+
+    useEffect(()=> {
+        fetchFavorites()
+    },[lots])
+
+    const fetchFavorites = async () => {
+        if(isAuth)
+        {
+            try
+            {
+                const {data} = await axios.get(FAVORITE,config)
+                
+                favoritedIds.current = data.lots.map(item => item.id);
+                console.log(favoritedIds);
+                var modifiedItemsTmp = lots.map(lot => favoritedIds.current.includes(lot.id) ? { ...lot, is_favorited: true } : { ...lot, is_favorited: false })
+                setModifiedItems(modifiedItemsTmp)
+                setFavorites(data.lots)
+                return;
+
+            }catch(err)
+            {
+                console.log(err);
+            }
+        }
+
+        return null;
+    }
+    
+  
+    if(modifiedItems.length===0 )
+    {
+        return <h1>Loading...</h1>
+    }
     return (
-        <div className="flex flex-row flex-wrap justify-start gap-y-2.5">
-            {lots.map((lot, idx) => <LotInfo key={idx} lot={lot} />)}
+        <div className="basis-2/3  pl-6 pr-4">
+            <h1 className="text-base">{lots.length} results</h1>
+            <div className='flex flex-row flex-wrap justify-between justify-items-center gap-2'>
+                {modifiedItems.map((lot, idx) => <LotInfo key={idx} lot={lot} />)}
+            </div>
+
         </div>
     )
 }
