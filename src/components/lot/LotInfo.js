@@ -1,22 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { HeartOutlined, MoneyCollectOutlined } from '@ant-design/icons';
+import { HeartFilled, HeartOutlined, MoneyCollectOutlined } from '@ant-design/icons';
 import { useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux/es/exports';
 
 
-import { Card } from 'antd';
+import { Card, notification } from 'antd';
 import "./LotItems.css";
 import "../auction/Auction.css"
 import { useAuth } from '../../hooks/useAuth';
+import axios from 'axios';
+import { ADD_2_FAVORITE } from '../../config/server';
 const { Meta } = Card;
 const LotInfo = ({ lot }) => {
-    const {isAuth} = useAuth();
+    const {isAuth,token} = useAuth();
+    const [isLoved, setIsLoved] = useState(lot.is_favorited)
     const navigate = useNavigate()
+
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token,
+            "Acept": "application/json"
+        }
+    }
     //const bids = useSelector((state) => state.bid)
-    const handleLoveItem = (id) => {
+    const handleLoveItem = async (id) => {
         if (!isAuth) {
             navigate("/login")
         }
+        let des = isLoved ? "Remove "+lot.name+" from your favorite" : 'Add '+ lot.name+' to your favorite'
+        let mess = isLoved ? "Remove from favorite" : "Add to favorite"
+        
+        
+        await axios.get(ADD_2_FAVORITE+lot.id,config)
+        .then(res => {
+            notification.open({
+                message: mess,
+                description:des
+              });
+        })
+        .catch(err=> console.log(err))
+
+        setIsLoved(!isLoved)
     }
     const handleBidItem = (id) => {
         if (!isAuth) {
@@ -65,6 +90,9 @@ const LotInfo = ({ lot }) => {
                 {lot.is_sold &&<h4>Sold: {lot.sold_price}$</h4>}
                 {checkBidded(lot.id) && <h1>Bidded</h1>}
                 {lot.is_next ? <h1 id="next-title">Next</h1>:<h1></h1>}
+                { !isLoved ? <HeartOutlined  key="ellipsis" onClick={() => handleLoveItem(lot.id)}/>
+                : <HeartFilled onClick={() => handleLoveItem(lot.id)} />
+            }
             </Card>
         </div>
     )

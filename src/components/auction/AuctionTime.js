@@ -6,6 +6,7 @@ import {useParams} from "react-router-dom";
 import axios from "axios";
 import {IS_REGISTERED_AUCTION, REGISTER_AUCTION} from "../../config/server";
 import {useAuth} from "../../hooks/useAuth";
+import { Button, notification } from "antd";
 
 
 
@@ -36,8 +37,16 @@ const AuctionTime = ({auction}) => {
     }
     const handleRegister = async () => {
         try {
-            const {data} = await axios.get(REGISTER_AUCTION+`/${params.id}`,configs)
+            const {data} = await axios.get(REGISTER_AUCTION+`?id=${params.id}`,configs)
+            
             await checkRegisteredAuction();
+
+            notification.success({
+                message: `Tin nhắn`,
+                description:
+                    `Bạn đã đăng ký phiên đấu giá. Chúng tôi đã gửi email để xác nhận đăng ký của bạn.`,
+                placement: "bottomLeft"
+            });
 
         }catch (error)
         {
@@ -70,8 +79,8 @@ const AuctionTime = ({auction}) => {
             </div>
             <div className="auction-time-buttons">
                 {isRegistered ?
-                    <button className="auction-time-button-register" disabled={isRegistered}>Registered!</button> :
-                    <button className="auction-time-button-register" onClick={handleRegister}>Register for auction</button>}
+                    <button className="auction-time-button-register text-xl p-4 text-green-800" disabled={isRegistered}>You Registered!</button> :
+                    <Button type="primary" onClick={handleRegister}>Register for auction</Button>}
 
             </div>
         </div>

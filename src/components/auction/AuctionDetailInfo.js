@@ -10,6 +10,7 @@ import {setAuction} from "../../hooks/slices/auctionSlice";
 
 const AuctionDetailInfo = () => {
     const [data, setData] = useState(null)
+    const [loading,setLoading] = useState(true)
     const params = useParams();
 
     useEffect(() => {
@@ -21,17 +22,19 @@ const AuctionDetailInfo = () => {
             .then(res => res.data)
             .then(data => {
                 setData(data);
+                setLoading(false)
             })
             .catch(e => console.log(e))
+    }
+    if(loading)
+    {
+        return <h1>Loading</h1>
     }
     return (
 
         <div className="auction-info">
-            {data != null ?
-                <>
                     <AuctionName auction={data}/>
                     <AuctionTime auction={data}/>
-                </> : <h1>Loaing</h1>}
         </div>
 
     )

@@ -4,8 +4,6 @@ import {Badge, Button, Menu, Popover} from "antd";
 import "./Common.css";
 import {Link, useNavigate} from "react-router-dom";
 
-const url = "http://localhost:8000/api/sse/subscribe"
-let source  = new EventSource(url);
 
 const NavBar = () => {
     const auth = localStorage.getItem("IS_AUTH");
@@ -15,23 +13,6 @@ const NavBar = () => {
     const [hasNoti, setHasNoti] = useState(false);
     const [noti, setNoti] = useState([])
 
-    useEffect(() => {
-
-
-        source.addEventListener("notification", (e) => {
-            console.log(e)
-            setHasNoti(true)
-            setNoti([e.data, ...noti])
-        })
-
-        source.onopen = (e) => {
-            console.log("Connected to server")
-        }
-
-        source.onerror = (e) => {
-            console.log("Failed to connected!")
-        }
-    }, [])
     const handleLogout = () => {
         localStorage.removeItem("AUCTION_TOKEN");
         localStorage.removeItem("AUCTION_USER");
@@ -56,7 +37,7 @@ const NavBar = () => {
         if (auth) {
             items = [
                 {
-                    label: <a> Profile</a>,
+                    label: <Link to={'profile/favorites'}> Profile </Link>,
                     key: 'profile',
                 },
                 {
@@ -80,19 +61,9 @@ const NavBar = () => {
     }
     const items = [
         {
-            label: 'Home',
+            label:<Link to={'/'}>Home</Link>,
             key: 'home',
             icon: <HomeOutlined/>,
-        },
-        {
-            label: 'Interested',
-            key: 'mail',
-            icon: <HeartOutlined/>,
-        },
-        {
-            label: <Link to={'/your-items'}>Your items</Link> ,
-            key: 'bid',
-            icon: <MoneyCollectOutlined/>,
         },
         {
             label: <Popover onClick={readNoti} placement="bottomRight" title={"Notification"} content={notiContent()}

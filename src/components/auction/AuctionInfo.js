@@ -4,7 +4,7 @@ import AuctionImage from "./AuctionImage";
 
 const AuctionInfo = () => {
     return (
-        <div>
+        <div className='py-4 border-b-4'>
             <AuctionImage />
             <AuctionDetailInfo />
         </div>

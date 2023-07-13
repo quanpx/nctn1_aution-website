@@ -1,11 +1,14 @@
-const ROOT_API = "http://localhost:8000/api/"
+export const ROOT_API = "http://localhost:8000/api/"
 
 export const LOGIN_URL = ROOT_API + "login";
 export const SIGNUP_URL = ROOT_API + "signup";
+export const FAVORITE = ROOT_API+"favorites";
 
 export const LOT_URL = ROOT_API + "lot";
 
 export const LOT_MARK_AS_SOLD = LOT_URL +"/sold";
+
+export const ADD_2_FAVORITE= LOT_URL+"/add2fav/"
 
 export const AUCTION_URL = ROOT_API + "auction";
 

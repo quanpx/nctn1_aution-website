@@ -3,7 +3,7 @@ const LotDescription = ({ lot }) => {
     console.log(lot);
     return (
         <div className="lot-description">
-            <div className="lot-image">
+            <div className="p-2 border-2 border-solid">
                 <img src={lot.image_url} width={500} height={500} />
             </div>
             <div className="lot-detail">

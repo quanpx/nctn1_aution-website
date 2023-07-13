@@ -106,10 +106,21 @@ const LotAction = ({lot}) => {
         return `/auction-stream/${latestLot.session}`
     }
 
+    const bidMessage = () => {
+        if(lot.is_sold){
+            return <span className="text-red-600"> This item was sold.</span>
+        }else
+        {
+            if(is_bid)
+            {
+                return <span>You set a bid! Please wait until auction start for next bids</span>
+            }
+        }
+    }
     return (
-        <div className="lot-action">
+        <div className="lot-action px-4">
             <div >
-                <h1>Some info</h1>
+                <h1 className="text-xl">Lot information</h1>
                 <h5>
                     {onAuctionStarted()}
                     <p>
@@ -162,7 +173,8 @@ const LotAction = ({lot}) => {
                             </Button>
                         </Form.Item>
                     </Form>
-                    {is_bid &&  <span>You set a bid! Please wait until auction start for next bids</span>}
+                    {bidMessage()}
+            
                 </div>
 
             </div>

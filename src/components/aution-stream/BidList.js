@@ -32,16 +32,16 @@ const BidList = ({ auction, curr, source, socket }) => {
 
         fetchBids()
         resolvePriceStep()
-        source.addEventListener("bid", (event) => {
-            console.log(event)
-            fetchBids()
+        // source.addEventListener("bid", (event) => {
+        //     console.log(event)
+        //     fetchBids()
 
-        })
+        // })
 
-        source.addEventListener("reload-bids",(event)=> {
-            console.log(event);
-            fetchBids()
-        })
+        // source.addEventListener("reload-bids",(event)=> {
+        //     console.log(event);
+        //     fetchBids()
+        // })
     }, [curr])
 
 

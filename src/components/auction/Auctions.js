@@ -1,12 +1,14 @@
 import AuctionRow from "./AuctionRow";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from "axios";
 import Auction from "./Auction";
 import { AUCTION_URL, REGISTERED_AUCTION } from "../../config/server";
-import { Pagination } from "antd";
+import { Button, DatePicker, Form, Input, InputNumber, Pagination, Select } from "antd";
 import "./Auction.css"
 import AuctionItem from "./AuctionItem";
 import { useAuth } from "../../hooks/useAuth";
+import DateTimePicker from "react-datetime-picker";
+
 
 const hour = 100; // For check state of auction
 
@@ -14,8 +16,12 @@ const Auctions = ({ paging }) => {
   const [data, setData] = useState(null);
   const [auctions, setAuctions] = useState([])
   const [loading, setLoading] = useState(true)
-  const { token } = useAuth();
+  const { token,isAuth } = useAuth();
   const [registedAuctions, setRegistedAuctions] = useState([])
+  const [form] = Form.useForm()
+  const text =Form.useWatch('text',form)
+  const status = Form.useWatch('status',form)
+  const date = Form.useWatch('date',form)
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -30,24 +36,26 @@ const Auctions = ({ paging }) => {
   // },[registedAuctions])
 
   useEffect(() => {
-    fetchData();
-  }, [])
+    fetchAuctions();
+  }, [loading])
 
-  const fetchData = async () => {
-    await fetchAuctions()
-    await fetchRegisteredAuctions()
-    setLoading(false)
+  useEffect(()=>{
 
-  }
-  const fetchAuctions = async () => {
+    
+    fetchRegisteredAuctions()
+  },[])
+
+
+  const fetchAuctions = async (config) => {
     try {
-      const { data } = await axios.get(AUCTION_URL)
+      const { data } = await axios.get(AUCTION_URL,config)
       let temp = data.auctions.map(auction => {
         let registed = checkRegistered(auction.id)
         return { ...auction, is_registed: registed }
       })
       setData(data)
       setAuctions(temp)
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -59,7 +67,7 @@ const Auctions = ({ paging }) => {
 
     for (var i = 0; i < registedAuctions.length; i++) {
       let item = registedAuctions[i];
-      console.log(item);
+      console.log(item,id);
       if (item.auction.id === id) {
         return true;
       }
@@ -68,10 +76,14 @@ const Auctions = ({ paging }) => {
 
   }
   const fetchRegisteredAuctions = async () => {
+    console.log(isAuth);
+    if(!isAuth)
+    {
+      return ;
+    }
     try {
 
       const { data } = await axios.get(REGISTERED_AUCTION, config)
-      console.log(data);
       setRegistedAuctions(data.registered_auctions)
 
     }
@@ -89,19 +101,87 @@ const Auctions = ({ paging }) => {
     return diff < hour ? true : false
   }
 
+  const resolveParams = () => {
+    
+    return {text,status,start_time:date}
+  }
+  
+  const handleTextChange = async ()=>
+  {
+    const params = resolveParams()
 
+    await fetchAuctions({params})
+  }
+  const handleValueChange = async (status)=>
+  {
+    console.log(status);
+    const params = resolveParams()
+    params.status = status
+    console.log(params);
+    await fetchAuctions({params})
+
+  }
+  const handleDateChange = async (date,dateString)=>
+  {
+    console.log(dateString);
+    const start = new Date( dateString ? dateString : '2000-01-01').getTime()
+    const params = resolveParams()
+    params.start_time = start
+    console.log(params);
+    await fetchAuctions({params})
+
+  }
   return (
     <>
       {!loading ? <div className="flex flex-row gap-2" >
         {data != null ?
           <>
-            <div className="filter-side basis-1/3 bg-red-200"></div>
-            <div className=' basis-2/3'>
+            <div className="filter-side basis-1/3 pl-2 border-r-4">
+              <h2 className="relative left-1/4 text-3xl py-3" >Filter Anything</h2>
+              <Form
+              
+                form={form}
+                labelCol={{
+                  span: 4,
+                }}
+                wrapperCol={{
+                  span: 14,
+                }}
+                layout="horizontal"
+              >
+                <Form.Item 
+                label="Text"
+                name="text"
+                
+                >
+                  <Input onKeyUp={handleTextChange} placeholder="Search for auction"/>
+                </Form.Item>
+                <Form.Item 
+                label="Status"
+                name="status"
+                >
+                  <Select defaultValue={""} onChange={handleValueChange}>
+                  <Select.Option value="" selected>All</Select.Option>
+                    <Select.Option value="active">Active</Select.Option>
+                    <Select.Option value="start">Start</Select.Option>
+                    <Select.Option value="end">End</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item 
+                label="Date"
+                name="date"
+
+                >
+                  <DatePicker onChange={handleDateChange}/>
+                </Form.Item>
+              </Form>
+            </div>
+            <div className=' basis-2/3 px-4'>
               <h1 className="text-base">{data.count} results</h1>
               <div className='flex flex-col justify-items-center gap-2'>
-                {data.auctions.map((item, idx) => {
+                {auctions.map((item, idx) => {
                   let handledItem = { ...item, is_new: checkIsNew(item.start_time) }
-                  return <AuctionItem key={idx} aution={handledItem} />
+                  return <AuctionItem key={idx} auction={handledItem} />
                 }
                 )}
                 {paging && <Pagination

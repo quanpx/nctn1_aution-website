@@ -1,0 +1,10 @@
+.introduction {
+    
+    background-image: url("/public/images/introduction.jpg");
+    background-size:  cover;
+    height: 600px;
+    width:fit-content;
+    background-repeat: no-repeat;
+    opacity: 80%;
+   
+}

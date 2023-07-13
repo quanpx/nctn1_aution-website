@@ -23,7 +23,7 @@ return (
           flexDirection:'row',
           justifyContent:'space-between'
       }}
-    > <h2><a href='/public'>BlueDeQuan</a></h2>
+    > <h2><Link to={'/'}>BlueDeQuan</Link></h2>
       <NavBar />
     </Header>
     <Content
@@ -42,7 +42,7 @@ return (
         separator='|'
       >
         <Breadcrumb.Item><Link to="/">Home</Link></Breadcrumb.Item>
-        <Breadcrumb.Item><Link to="/">Auction</Link></Breadcrumb.Item>
+        <Breadcrumb.Item><Link to="/auctions">Auction</Link></Breadcrumb.Item>
         <Breadcrumb.Item><Link to="/">Live</Link></Breadcrumb.Item>
         <Breadcrumb.Item><Link to="/">Collections</Link></Breadcrumb.Item>
       </Breadcrumb>

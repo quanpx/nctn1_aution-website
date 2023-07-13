@@ -1,0 +1,61 @@
+version: "3.8"
+services:
+  web:
+    image: crisphung/nctn-be:v1
+    container_name: nctn-be
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "db"
+    networks:
+      - backend
+      - frontend
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/nctndb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=crquan07
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: crquan07
+      POSTGRES_USER: postgres
+      POSTGRES_DB: itjapanesedb
+    networks:
+      - backend
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+  frontend:
+    image: crisphung/nctn-fe:v1
+    container_name: itss-fe
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - frontend
+
+    env_file:
+      - .env
+    volumes:
+      - ./conf/templates/:/etc/nginx/templates
+    
+    singaling: 
+      iamge: crisphung/nctn-singaling:v1
+      restart: unless_stopped
+      container_name: nctn-singaling
+      ports:
+       - "5000:3000"
+      networks:
+       - backend
+
+networks:
+  backend:
+  frontend:
+
+volumes:
+  pg-data:
+    driver: local

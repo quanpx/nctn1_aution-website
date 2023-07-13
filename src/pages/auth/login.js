@@ -2,7 +2,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import { LOGIN_URL } from "../../config/server";
 import React from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./login.css";
 import { useDispatch } from "react-redux";
 import userSlice from "../../hooks/slices/userSlice";
@@ -11,6 +11,9 @@ import { login } from "../../hooks/slices/userSlice";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const redirectTo =searchParams.get("redirectTo") !==null ? decodeURIComponent(searchParams.get('redirectTo')) : null
+  console.log(redirectTo);
   const onFinish = async (values) => {
     await axios
       .post(LOGIN_URL, values, {
@@ -38,8 +41,16 @@ const Login = () => {
           console.log(data)
         if (data.role.includes("admin", 0)) {
           navigate("/admin");
-        } else {
-          navigate("/");
+        }else {
+          if(redirectTo!==null)
+          {
+            console.log(redirectTo);
+            navigate(redirectTo);
+          }else 
+          {
+            navigate("/")
+          }
+    
         }
       })
       .catch((err) => alert(err));
@@ -85,7 +96,7 @@ const Login = () => {
               Sign in with
             </h1>
             <img
-              className="google-login"
+              className="google-login m-auto"
               src={process.env.PUBLIC_URL + "/images/search.png"}
             />
             <br />
