@@ -12,7 +12,7 @@ const Auction = ({ aution }) => {
   };
   return (
     <div className="relative">
-      {aution.is_new ? <h1 className="status">New</h1> : <h1> </h1>}
+      {aution.is_new ? <h1 className="status">Mới</h1> : <h1> </h1>}
 
       <Card
         hoverable={true}
@@ -25,11 +25,11 @@ const Auction = ({ aution }) => {
       >
         <Meta
           title={aution.name}
-          description={`${aution.num_item} lots - ${aution.register_num} followers`}
+          description={`${aution.num_item} sản phẩm - ${aution.register_num} đăng ký `}
         />
 
         <Button className="absolute bottom-0 right-1 bg-cyan-800 mt-2">
-          <HeartOutlined key="heart" /> <span className="text-red-500">Follow this auction</span>
+          <HeartOutlined key="heart" /> <span className="text-red-500">Quan tâm</span>
         </Button>
       </Card>
     </div>

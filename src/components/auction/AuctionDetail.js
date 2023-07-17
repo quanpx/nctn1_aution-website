@@ -150,7 +150,7 @@ const AuctionDetail = () => {
                                         <Select.Option value={true}>Sold</Select.Option>
                                     </Select>
                                 </Form.Item>
-                                <Form.Item name="price" label="Price">
+                                <Form.Item name="price" label="Initial price">
                                     <br />
                                     <Slider onChange={handlePriceChange} range min={1} max={1000} marks={marks} defaultValue={[0, 100]} />
                                 </Form.Item>

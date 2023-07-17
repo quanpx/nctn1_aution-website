@@ -13,9 +13,10 @@ import { ADD_2_FAVORITE } from '../../config/server';
 const { Meta } = Card;
 const LotInfo = ({ lot }) => {
     const {isAuth,token} = useAuth();
-    const [isLoved, setIsLoved] = useState(lot.is_favorited)
+    const [isLoved, setIsLoved] = useState(false)
     const navigate = useNavigate()
-
+  
+    useEffect(() => setIsLoved(lot.is_favorited),[lot])
     const config = {
         headers: {
             "Content-Type": "application/json",
@@ -86,7 +87,7 @@ const LotInfo = ({ lot }) => {
                     title={<Link to={"/lot/" + lot.id}>{lot.name}</Link>}
                     description={`Est. ${lot.estm_price}`}
                 />
-                <h3>Curr price: {lot.current_price}</h3>
+                <h3>Initial price: {lot.init_price}</h3>
                 {lot.is_sold &&<h4>Sold: {lot.sold_price}$</h4>}
                 {checkBidded(lot.id) && <h1>Bidded</h1>}
                 {lot.is_next ? <h1 id="next-title">Next</h1>:<h1></h1>}

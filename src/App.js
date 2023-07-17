@@ -22,6 +22,7 @@ import Profile from './pages/profile/Profile';
 import YourAuctions from './pages/profile/YourAuctions';
 import YourItems from './pages/profile/YourItems';
 import Test from './test/Test';
+import Payment from './pages/payment/Payment';
 function App() {
   return (
     <Routes>
@@ -34,9 +35,14 @@ function App() {
         <Route path="auctions" element={<Auctions />} />
         <Route path="auction/:id" element={<AuctionDetail />} />
         <Route path="lot/:id" element={<LotDetail />} />
-       
-        <Route path="auction-stream/:id" element={<AuctionStream/>}/>
 
+        <Route path="auction-stream/:id" element={<AuctionStream />} />
+
+        <Route path="profile" element={<Profile />}>
+          <Route path="favorites" element={<Favorite />} />
+          <Route path="auctions" element={<YourAuctions />} />
+          <Route path="items" element={<YourItems />} />
+        </Route>
 
 
         <Route path="admin" element={<PrivateRoute>
@@ -49,14 +55,12 @@ function App() {
           <Route path="allauctions" element={<AuctionDashboard />} />
         </Route>
       </Route>
-      <Route path="profile" element={<Profile />}>
-        <Route path="favorites" element={<Favorite />} />
-        <Route path="auctions" element={<YourAuctions />} />
-        <Route path="items" element={<YourItems />} />
-      </Route>
-      <Route path="test" element={<Test/>}/>
-     
-    
+
+      <Route path="/payment" element={<Payment/>}/>
+
+      <Route path="test" element={<Test />} />
+
+
     </Routes>
   );
 }

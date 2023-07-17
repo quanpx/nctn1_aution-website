@@ -21,15 +21,16 @@ const LotItems = ({ lots }) => {
 
     useEffect(()=> {
         fetchFavorites()
+        setModifiedItems(lots)
     },[lots])
 
     const fetchFavorites = async () => {
-        if(isAuth)
+        if(isAuth!==null || isAuth)
         {
             try
             {
                 const {data} = await axios.get(FAVORITE,config)
-                
+                console.log(data);
                 favoritedIds.current = data.lots.map(item => item.id);
                 console.log(favoritedIds);
                 var modifiedItemsTmp = lots.map(lot => favoritedIds.current.includes(lot.id) ? { ...lot, is_favorited: true } : { ...lot, is_favorited: false })
@@ -47,10 +48,6 @@ const LotItems = ({ lots }) => {
     }
     
   
-    if(modifiedItems.length===0 )
-    {
-        return <h1>Loading...</h1>
-    }
     return (
         <div className="basis-2/3  pl-6 pr-4">
             <h1 className="text-base">{lots.length} results</h1>

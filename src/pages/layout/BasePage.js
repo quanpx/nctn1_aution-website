@@ -41,17 +41,17 @@ return (
         }}
         separator='|'
       >
-        <Breadcrumb.Item><Link to="/">Home</Link></Breadcrumb.Item>
-        <Breadcrumb.Item><Link to="/auctions">Auction</Link></Breadcrumb.Item>
-        <Breadcrumb.Item><Link to="/">Live</Link></Breadcrumb.Item>
-        <Breadcrumb.Item><Link to="/">Collections</Link></Breadcrumb.Item>
+        <Breadcrumb.Item><Link to="/">Trang chủ</Link></Breadcrumb.Item>
+        <Breadcrumb.Item><Link to="/auctions">Phiên đấu giá</Link></Breadcrumb.Item>
+        <Breadcrumb.Item><Link to="/">Trực tiép</Link></Breadcrumb.Item>
+        <Breadcrumb.Item><Link to="/">Bộ sưu tập</Link></Breadcrumb.Item>
       </Breadcrumb>
       <Breadcrumb
         style={{
           margin: '16px 0',
         }}
       >
-        <Breadcrumb.Item><Link to="/">Home</Link></Breadcrumb.Item>
+        <Breadcrumb.Item><Link to="/">Trang chủ</Link></Breadcrumb.Item>
         <Breadcrumb.Item><Link to={location.pathname.split("/")[1]}>{location.pathname.split("/")[1]}</Link></Breadcrumb.Item>
         <Breadcrumb.Item >{location.pathname.split("/")[2]}</Breadcrumb.Item>
       </Breadcrumb>
@@ -70,7 +70,7 @@ return (
         textAlign: 'center',
       }}
     >
-     <h4> NCTN - Auction Site </h4>
+     <h4> DATN - Website đấu giá đồ thủ công </h4>
      <h3> GVHD - ThS. Do Tuan Anh </h3>
     </Footer>
   </Layout>

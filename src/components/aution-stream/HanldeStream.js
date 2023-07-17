@@ -112,26 +112,11 @@ const HandleStream = ({auction }) => {
                 <Button type="" onClick={handleStart} disabled={!startable || auction.status ==='active'}>Start Stream</Button>
                 <Button type="" onClick={handleEnd} disabled={startable || auction.status ==='end'}>End Stream</Button>
             </>
-        } else if (role === "user") {
-            if (status === 'start') {
-                return <>
-                    <h3><i>The auction has started. You can join now!</i></h3>
-                     <Button type="" onClick={handleJoin} disabled={isJoined}>{isJoined ? 'Joined' : 'Join Stream'}</Button>
-                     <Button type="" onClick={handleOut} disabled={!isJoined}>Out</Button>
-                </>
-            }else if(status === 'end')
-            {
-                return <h3><i>The auction finished! Waiting for next auction!</i></h3>
-            }
-             else {
-                return <h3><i>The auction is not started! Waiting for auction start</i></h3>
-            }
         }
     }
 
     return (
         <div className="stream-video">
-            {started && <span>Watching: {peopleWatching}</span>}
             <div className="video">
                 <video ref={videoRef} width={250} height={220} />
             </div>

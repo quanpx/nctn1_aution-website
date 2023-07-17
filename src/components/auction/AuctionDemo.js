@@ -54,7 +54,7 @@ const AuctionDemo = ({ paging }) => {
                         )}
                     </div>
                 </>
-                : <h1>Wait</h1>}
+                : <h1>Đang tải</h1>}
 
         </div>
     )

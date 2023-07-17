@@ -25,7 +25,7 @@ const NavBar = () => {
 
     const notiContent = () => {
         if (noti.length == 0) {
-            return <p>No notification</p>
+            return <p>Thông báo</p>
         } else {
             return <div>
                 {noti.map((item, idx) => <p key={idx}>{item}</p>)}
@@ -41,7 +41,7 @@ const NavBar = () => {
                     key: 'profile',
                 },
                 {
-                    label: <a onClick={handleLogout}> Logout </a>,
+                    label: <a onClick={handleLogout}> Đăng xuất </a>,
                     key: 'logout',
                 }
             ]
@@ -49,7 +49,7 @@ const NavBar = () => {
             items = [
 
                 {
-                    label: <a onClick={handleLogin}>Login</a>,
+                    label: <a onClick={handleLogin}>Đăng nhập</a>,
                     key: 'login',
                 }
             ]
@@ -61,20 +61,20 @@ const NavBar = () => {
     }
     const items = [
         {
-            label:<Link to={'/'}>Home</Link>,
+            label:<Link to={'/'}>Trang chủ</Link>,
             key: 'home',
             icon: <HomeOutlined/>,
         },
         {
             label: <Popover onClick={readNoti} placement="bottomRight" title={"Notification"} content={notiContent()}
                             trigger="click">
-                Notification
+                Thông báo
             </Popover>,
             key: 'noti',
             icon: <Badge dot={hasNoti}> <BellOutlined/></Badge>,
         },
         {
-            label: 'Account',
+            label: 'Tài khoán',
             key: 'account',
             icon: <UserOutlined/>,
             children: profileItems()

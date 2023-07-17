@@ -5,22 +5,24 @@ import "./StreamPage.css";
 import axios from "axios";
 import { BID_IN_AUCTION, BID_URL } from "../../config/server";
 import { useAuth } from "../../hooks/useAuth";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateLatestBid } from '../../hooks/slices/auctionSlice';
+import { setBids, setCurrPrice, setDisable, setLatestBid } from '../../hooks/slices/bidSlice';
 
 
 const NEW_BID = "new-bid"
 
-const BidList = ({ auction, curr, source, socket }) => {
+const BidList = ({ auction, curr, stompClient }) => {
     const [registered, setRegistered] = useState(true)
     const [price, setPrice] = useState()
-    const [bids, setBids] = useState([])
+    // const [bids, setBids] = useState([])
     const [priceStep, setPriceStep] = useState(10)
-    const [disableBidButton, setDisable] = useState(true)
     const { user, token, role } = useAuth();
 
     const dispatch = useDispatch()
-
+    const {bids,latestBid,disable} = useSelector((state) => state.bid)
+    const {currLot} = useSelector((state) => state.auction)
+    
     const configs = {
         headers: {
             "Content-Type": "application/json",
@@ -32,16 +34,6 @@ const BidList = ({ auction, curr, source, socket }) => {
 
         fetchBids()
         resolvePriceStep()
-        // source.addEventListener("bid", (event) => {
-        //     console.log(event)
-        //     fetchBids()
-
-        // })
-
-        // source.addEventListener("reload-bids",(event)=> {
-        //     console.log(event);
-        //     fetchBids()
-        // })
     }, [curr])
 
 
@@ -52,17 +44,19 @@ const BidList = ({ auction, curr, source, socket }) => {
             console.log(data)
             if (data.bids.length === 0) {
                 setDisable(false)
-                setBids(data.bids)
+                //setBids(data.bids)
+                dispatch(setBids(data.bids))
             }
             else {
                 let latestBid = data.bids[0];
                 if (latestBid.owner === user) {
-                    setDisable(true)
+                    dispatch(setDisable(true))
                 } else {
-                    setDisable(false)
+                    dispatch(setDisable(false))
                 }
-                dispatch(updateLatestBid(latestBid))
-                setBids(data.bids)
+                dispatch(setCurrPrice(latestBid.bid_price))
+                dispatch(setLatestBid(latestBid))
+                dispatch(setBids(data.bids))
             }
 
         }
@@ -80,7 +74,7 @@ const BidList = ({ auction, curr, source, socket }) => {
         }
         try {
             const { data } = await axios.post(BID_URL, body, configs)
-            await fetchBids();
+
 
         } catch (e) {
             console.log(e)
@@ -110,16 +104,14 @@ const BidList = ({ auction, curr, source, socket }) => {
         }
         try {
             const { data } = await axios.post(BID_URL, body, configs)
-            await fetchBids();
-
         } catch (e) {
             console.log(e)
         }
 
     }
-
+    
     const resolveDisableBidButton = () => {
-        if(auction.status !== "start" || disableBidButton)
+        if(auction.status !== "start" || disable || currLot.is_sold)
         {
             return true;
         }
@@ -137,7 +129,7 @@ const BidList = ({ auction, curr, source, socket }) => {
             {role != "admin" &&
                 <> <span style={{ padding: '10px', fontStyle: 'oblique' }}>When auction starting, you can bid multiple price</span>
                     <div className="bid-function">
-                        <Button disabled={resolveDisableBidButton()} onClick={handleBidWithAutoPrice} style={!disableBidButton ? { width: '100%', marginBottom: '5px', backgroundColor: 'green' }
+                        <Button disabled={resolveDisableBidButton()} onClick={handleBidWithAutoPrice} style={!disable ? { width: '100%', marginBottom: '5px', backgroundColor: 'green' }
                             : { width: '100%', marginBottom: '5px', backgroundColor: 'red' }}>
                             {curr.current_price + priceStep} $ Bid</Button><br />
                         <label>Price: </label>

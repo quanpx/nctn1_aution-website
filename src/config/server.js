@@ -4,6 +4,13 @@ export const LOGIN_URL = ROOT_API + "login";
 export const SIGNUP_URL = ROOT_API + "signup";
 export const FAVORITE = ROOT_API+"favorites";
 
+export const ITEMS = ROOT_API+"items";
+
+export const INVOICE = ROOT_API+"payment/invoice";
+
+export const PAY = ROOT_API+"payment/pay";
+
+
 export const LOT_URL = ROOT_API + "lot";
 
 export const LOT_MARK_AS_SOLD = LOT_URL +"/sold";
@@ -13,6 +20,8 @@ export const ADD_2_FAVORITE= LOT_URL+"/add2fav/"
 export const AUCTION_URL = ROOT_API + "auction";
 
 export const UPDATE_AUCTION_STATUS = AUCTION_URL+"/updatestatus"
+
+export const JOIN_AUCTION = AUCTION_URL+"/join";
 
 export const BID_URL = ROOT_API + "bid";
 

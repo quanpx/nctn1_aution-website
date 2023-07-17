@@ -9,7 +9,7 @@ const FavoriteItem = ({lot}) => {
             <p><span><i>Timed Auctions:</i></span> {moment(lot.start_time).format('MMMM Do YYYY, h:mm:ss a')}</p>
             <h1><Link to={'/lot/'+lot.id}> Lot {lot.id}: {lot.name}</Link></h1>
             <p>{lot.description}   </p>
-            <h1>Price: {lot.init_price} $ ({lot.bid_num} bid) </h1>
+            <h1>Price: {lot.init_price} $ ({lot.bid_num} bid) </h1>     
         </div>
     </>
   

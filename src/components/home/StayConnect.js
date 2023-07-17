@@ -8,21 +8,21 @@ const StayConnect = () => {
            <div className="w-full">
                 <img className="px-20 hover:scale-110 transition duration-100" src={process.env.PUBLIC_URL + '/images/signup.jpg'} height="auto"/>
                 <div className="mt-2 p-5 mx-2s">
-                    <h1 className="text-2xl">Sign Up to enjoy with us</h1>
-                    <p>Can’t make it to our auctions? We provide Live bidding from the comfort of your home.
+                    <h1 className="text-2xl">Đăng ký để nhận thông báo mới nhất</h1>
+                    <p>Bất cứ khi nào có phiên đấu giá mới, chúng tôi sẽ thông báo đến bạn
                     </p>
-                    <Button type="primary">CREATE ACCOUNT</Button>
+                    <Button type="primary">Đăng ký</Button>
                 </div>
               
            </div>
            <div className="w-full">
            <img className="px-20 hover:scale-110 transition duration-100" src={process.env.PUBLIC_URL + '/images/aboutus.jpg'} height="auto"/>
                 <div className="mt-2 p-5 mx-2" >
-                    <h1 className="text-2xl">About us</h1>
+                    <h1 className="text-2xl">Chúng tôi mang đến</h1>
                     <p >
                         Đấu giá các đồ thủ công mỹ nghệ, đồ gốm, sứ, tranh của các họa sĩ nổi tiếng… đến đấu thầu các công trình nhà ở, khu đô thị …
                     </p>
-                    <Button type="primary">GETTING HERE</Button>
+                    <Button type="primary">Đọc thêm</Button>
                 </div>
            </div>
 

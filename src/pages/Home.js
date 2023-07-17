@@ -9,6 +9,7 @@ import Introduction from '../components/home/Introduction';
 import StayConnect from '../components/home/StayConnect';
 import { useFetchFavoritesQuery } from '../hooks/apis/favoriteApi';
 import { useAuth } from '../hooks/useAuth';
+import { Skeleton } from 'antd';
 
 const Home = () => {
     const [lots, setLots] = useState([])
@@ -28,18 +29,24 @@ const Home = () => {
         }
 
     }
+
+    if (loading) {
+        return <div>
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+        </div>
+    }
     return (
-        <>
-        {!loading ? <div className='flex flex-col'>
+         <div className='flex flex-col'>
             <Description />
-            <h2 className='text-base text-red-800 mt-5 p-2'> Featured Auctions <a href='/auctions'><span>See All</span></a></h2>
+            <h2 className='text-base text-red-800 mt-5 p-2'> Phiên đấu giá mới <a href='/auctions'><span>Tất cả</span></a></h2>
             <AuctionDemo />
             <Introduction/>
             <StayConnect/>
             {/* <h2 className='text-base text-red-800 mt-5 p-2'> All lots</h2>
             <LotItems lots={lots} /> */}
-        </div>: <h1>Loading...</h1>}
-        </>
+        </div>
         
     )
 
