@@ -20,8 +20,6 @@ import { setBids, setCurrPrice, setDisable, setLatestBid } from "../../hooks/sli
 import { setCurrLot, setDisableSoldButton, setLots, setNumUsers } from "../../hooks/slices/auctionSlice";
 import { reloadBids } from "../../services/bidServices";
 
-// let serverURL = "http://localhost:5000"
-// var socket = io(serverURL, { transports: ['websocket'] })
 
 var socket;
 var stompClient;

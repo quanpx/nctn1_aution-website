@@ -1,4 +1,6 @@
-export const ROOT_API = "http://localhost:8000/api/"
+export const ROOT_API =  "/api/"
+
+export const WEB_SOCKET =`${process.env.REACT_APP_SERVER_IP}:${process.env.REACT_APP_SERVER_PORT}/nctn-ws` ;
 
 export const LOGIN_URL = ROOT_API + "login";
 export const SIGNUP_URL = ROOT_API + "signup";

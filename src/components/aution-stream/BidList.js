@@ -8,6 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateLatestBid } from '../../hooks/slices/auctionSlice';
 import { setBids, setCurrPrice, setDisable, setLatestBid } from '../../hooks/slices/bidSlice';
+import { modifyCurrency } from '../../utils/priceUtils';
 
 
 const BidList = ({ auction, curr, stompClient }) => {
@@ -16,9 +17,8 @@ const BidList = ({ auction, curr, stompClient }) => {
     // const [bids, setBids] = useState([])
     const [priceStep, setPriceStep] = useState(10)
     const { user, token, role } = useAuth();
-
     const dispatch = useDispatch()
-    const {bids,latestBid,disable} = useSelector((state) => state.bid)
+    const {bids,currPrice,latestBid,disable} = useSelector((state) => state.bid)
     const {currLot} = useSelector((state) => state.auction)
     
     const configs = {
@@ -32,9 +32,15 @@ const BidList = ({ auction, curr, stompClient }) => {
 
         fetchBids()
         resolvePriceStep()
+      
     }, [curr])
 
+    useEffect(()=> {
+        resolvePriceStep()
+    }, [currPrice])
 
+
+   
     const fetchBids = async () => {
         try {
             console.log(curr);
@@ -82,12 +88,12 @@ const BidList = ({ auction, curr, stompClient }) => {
     const resolvePriceStep = () => {
         const currPrice = curr.current_price;
         let step = 0;
-        if (currPrice < 100) {
-            step = 10;
-        } else if (100 < currPrice && currPrice < 500) {
-            step = 50;
+        if (currPrice < 1000000) {
+            step = 500000;
+        } else if (1000000 < currPrice && currPrice < 5000000) {
+            step = 1000000;
         } else {
-            step = 100;
+            step = 2000000;
         }
         setPriceStep(step)
     }
@@ -96,7 +102,7 @@ const BidList = ({ auction, curr, stompClient }) => {
         e.preventDefault()
         console.log("Received values from form: ", price);
         const body = {
-            bid_price: curr.current_price + priceStep,
+            bid_price: currPrice + priceStep,
             lot_id: curr.id,
             auction_id: curr.session
         }
@@ -129,7 +135,7 @@ const BidList = ({ auction, curr, stompClient }) => {
                     <div className="bid-function">
                         <Button disabled={resolveDisableBidButton()} onClick={handleBidWithAutoPrice} style={!disable ? { width: '100%', marginBottom: '5px', backgroundColor: 'green' }
                             : { width: '100%', marginBottom: '5px', backgroundColor: 'red' }}>
-                            {curr.current_price + priceStep} VND Bid</Button><br />
+                           Đặt {modifyCurrency(currPrice + priceStep)}</Button><br />
                         <label>Giá: </label>
                         <Input disabled={resolveDisableBidButton()} type='text' onChange={(e) => setPrice(parseInt(e.target.value))} />
 

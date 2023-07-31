@@ -40,6 +40,8 @@ services:
     networks:
       - frontend
 
+    depends_on:
+      - "web"
     env_file:
       - .env
     volumes:

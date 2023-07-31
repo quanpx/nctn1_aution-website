@@ -8,6 +8,8 @@ import { LOT_MARK_AS_SOLD } from "../../config/server";
 import HandleStream from "./HanldeStream";
 import { EyeOutlined } from "@ant-design/icons";
 import { setCurrLot } from "../../hooks/slices/auctionSlice";
+import { resolveStatus } from "../../utils/resolveAuctionStatus";
+import { modifyCurrency } from "../../utils/priceUtils";
 
 
 const UpperStreamPart = ({onNextButton, auctionInfo, stompClient }) => {
@@ -34,13 +36,13 @@ const UpperStreamPart = ({onNextButton, auctionInfo, stompClient }) => {
             if (auctionInfo.auction.status === "end") {
                 return <div>
                     {numUsers} <EyeOutlined />
-                    <p>Status: {auctionInfo.auction.status}</p>
-                    <p>Sold price: {currLot.current_price} $</p>
+                    <p>Trạng thái: {resolveStatus(auctionInfo.auction.status)}</p>
+                    <p>Giá đã bán: {modifyCurrency(currLot.current_price)} </p>
                 </div>
             } else {
                 return <div>
                  Đang xem: {numUsers} <EyeOutlined />
-                    <p>Giá hiện tại: {currPrice} $</p>
+                    <p>Giá hiện tại: {modifyCurrency(currPrice)} </p>
                 </div>
             }
         }
@@ -54,7 +56,7 @@ const UpperStreamPart = ({onNextButton, auctionInfo, stompClient }) => {
         var diffHrs = diffMs >= 0 ? Math.floor((diffMs % 86400000) / 3600000) : 0; // hours
         var diffMins = diffMs >= 0 ? Math.round(((diffMs % 86400000) % 3600000) / 60000) : 0; // minutes
 
-        return diffDays + " days, " + diffHrs + " hours, " + diffMins + " minutes left";
+        return diffDays + " ngày, " + diffHrs + " giờ, " + diffMins + " phút";
 
     }
 
@@ -69,8 +71,8 @@ const UpperStreamPart = ({onNextButton, auctionInfo, stompClient }) => {
                 <p style={{ paddingLeft: '15px', paddingRight: '25px' }}>
                     {auctionInfo.auction.description}
                 </p>
-                <h1 className="text-red-500">The auction has not been started. Please comeback soon!</h1>
-                <h1 className="text-red-500">The auction will be started in {differentTime(auctionInfo.auction)}</h1>
+                <h1 className="text-red-500">Phiên đấu giá chưa được bắt đầu. Xin vui lòng quay lại lần sau.</h1>
+                <h1 className="text-red-500">Phiên đấu giá bắt đầu sau {differentTime(auctionInfo.auction)}</h1>
                
             </div>
         </div>
