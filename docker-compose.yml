@@ -5,7 +5,7 @@ services:
     container_name: nctn-be
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "8000:8000"
     depends_on:
       - "db"
     networks:
@@ -18,20 +18,22 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
   db:
     image: postgres
+    container_name: nctn-db
     ports:
       - "5432:5432"
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: crquan07
       POSTGRES_USER: postgres
-      POSTGRES_DB: itjapanesedb
+      POSTGRES_DB: nctndb
     networks:
       - backend
     volumes:
       - pg-data:/var/lib/postgresql/data
+
   frontend:
     image: crisphung/nctn-fe:v1
-    container_name: itss-fe
+    container_name: nctn-fe
     restart: unless-stopped
     ports:
       - "80:80"
@@ -43,15 +45,6 @@ services:
     volumes:
       - ./conf/templates/:/etc/nginx/templates
     
-    singaling: 
-      iamge: crisphung/nctn-singaling:v1
-      restart: unless_stopped
-      container_name: nctn-singaling
-      ports:
-       - "5000:3000"
-      networks:
-       - backend
-
 networks:
   backend:
   frontend:

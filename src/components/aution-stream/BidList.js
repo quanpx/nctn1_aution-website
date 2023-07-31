@@ -10,8 +10,6 @@ import { updateLatestBid } from '../../hooks/slices/auctionSlice';
 import { setBids, setCurrPrice, setDisable, setLatestBid } from '../../hooks/slices/bidSlice';
 
 
-const NEW_BID = "new-bid"
-
 const BidList = ({ auction, curr, stompClient }) => {
     const [registered, setRegistered] = useState(true)
     const [price, setPrice] = useState()
@@ -131,7 +129,7 @@ const BidList = ({ auction, curr, stompClient }) => {
                     <div className="bid-function">
                         <Button disabled={resolveDisableBidButton()} onClick={handleBidWithAutoPrice} style={!disable ? { width: '100%', marginBottom: '5px', backgroundColor: 'green' }
                             : { width: '100%', marginBottom: '5px', backgroundColor: 'red' }}>
-                            {curr.current_price + priceStep} $ Bid</Button><br />
+                            {curr.current_price + priceStep} VND Bid</Button><br />
                         <label>Giá: </label>
                         <Input disabled={resolveDisableBidButton()} type='text' onChange={(e) => setPrice(parseInt(e.target.value))} />
 

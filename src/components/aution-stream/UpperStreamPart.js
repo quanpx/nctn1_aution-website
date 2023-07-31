@@ -12,12 +12,13 @@ import { setCurrLot } from "../../hooks/slices/auctionSlice";
 
 const UpperStreamPart = ({onNextButton, auctionInfo, stompClient }) => {
     const { user, token, role } = useAuth();
+   
     const dispatch = useDispatch()
     const {currPrice} = useSelector((state => state.bid))
     const {currLot,numUsers} = useSelector(state => state.auction)
     useEffect(() => {
         getCurrentLot()
-        
+
 
     }, [auctionInfo])
 

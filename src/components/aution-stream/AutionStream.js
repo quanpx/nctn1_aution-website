@@ -3,7 +3,7 @@ import LotList from "./LotList";
 import "./AuctionStream.css"
 import axios from "axios";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { AUCTION_URL, BID_IN_AUCTION, JOIN_AUCTION } from "../../config/server";
+import { AUCTION_URL, BID_IN_AUCTION, JOIN_AUCTION, WEB_SOCKET } from "../../config/server";
 import UpperStreamPart from "./UpperStreamPart";
 import { io } from "socket.io-client";
 import { Button, Modal, Skeleton, notification } from "antd";
@@ -24,7 +24,6 @@ import { reloadBids } from "../../services/bidServices";
 // var socket = io(serverURL, { transports: ['websocket'] })
 
 var socket;
-const url = 'http://localhost:8000/nctn-ws/';
 var stompClient;
 const AuctionStream = () => {
     console.log("Rerender");
@@ -59,7 +58,7 @@ const AuctionStream = () => {
     }, [])
 
     useEffect(() => {
-        socket = new SockJS(url)
+        socket = new SockJS(WEB_SOCKET)
         stompClient = Stomp.over(socket)
         stompClient.connect({ username: user }, (frame) => {
             stompClient.subscribe('/topic/auction', (data) => {

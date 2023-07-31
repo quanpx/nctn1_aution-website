@@ -94,11 +94,9 @@ const CreateItem = () => {
                     <InputNumber/>
                 </Form.Item>
                 <Form.Item label="Estm Price" name="estm_price">
-                    <InputNumber/>
+                    <Input/>
                 </Form.Item>
-                <Form.Item label="Step" name="step">
-                    <InputNumber/>
-                </Form.Item>
+                
                 <Form.Item label="Description" name='description'>
                     <TextArea/>
                 </Form.Item>
