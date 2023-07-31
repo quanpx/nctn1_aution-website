@@ -17,19 +17,14 @@ const AuctionDetail = () => {
     const [data, setData] = useState()
     const [lots, setLots] = useState()
     const [auctions, setAuctions] = useState([])
-    const [loading,setLoading] = useState(true)
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
     const { id } = useParams();
     const [form] = Form.useForm()
     const text = Form.useWatch('text', form)
     const status = Form.useWatch('is_sold', form)
+    const sort = Form.useWatch("sort",form)
     const dispatch = useDispatch()
-    
-    const [marks, setMarks] = useState({
-        '0': '1$',
-        '500': '500$',
-        '1000': '1000$'
-    })
 
     useEffect(() => { fetchData() }, [])
 
@@ -66,8 +61,7 @@ const AuctionDetail = () => {
             name: text,
             isSold: status,
             session: id,
-            minPrice: 0,
-            maxPrice: 100000
+            orderBy: sort
         }
         return params;
     }
@@ -85,25 +79,23 @@ const AuctionDetail = () => {
 
     }
 
-    const handlePriceChange = async (value) => {
+    const handleSortChange = async (sort) => {
 
-        const min = value[0];
-        const max = value[1]
+        console.log(sort);
         const params = resolveParams()
-        params.minPrice = min
-        params.maxPrice = max
-
+        params.orderBy = sort
+       
         await fetchLots({ params })
     }
 
-    if(loading && auctions.length==0)
-    {   console.log(auctions);
+    if (loading && auctions.length == 0) {
+        console.log(auctions);
         console.log("to here");
         return <h1>Loading...</h1>
     }
     const handleNavigate = (id) => {
         console.log(id);
-        navigate("/auction/"+id)
+        navigate("/auction/" + id)
     }
 
     return (
@@ -119,52 +111,68 @@ const AuctionDetail = () => {
                 <AuctionInfo />
 
                 <div className='flex flex-row'>
-                    <div className="filter-side basis-1/3 pl-2 border-r-4">
-                        <h2 className="relative text-3xl py-3" >Filter Anything</h2>
-                        <div className='pt-4 pb-8 border-b-4'>
+                    <div className=" basis-1/4 pl-2 border-r-4">
+                        <h2 className="relative text-3xl py-3" >Bộ lọc</h2>
+                        <div className='pt-4 pb-4 border-b-4'>
                             <Form
 
                                 form={form}
                                 labelCol={{
-                                    span: 4,
+                                    span: 7,
                                 }}
                                 wrapperCol={{
-                                    span: 14,
+                                    span: 20,
                                 }}
-                                layout="horizontal"
+                                layout="vertical"
                             >
                                 <Form.Item
-                                    label="Text"
+                                    labelAlign='l'
+                                    label="Tìm kiếm"
                                     name="text"
+                                    
 
                                 >
-                                    <Input onKeyUp={handleTextChange} placeholder="Search for item" />
+                                    <Input onKeyUp={handleTextChange} placeholder="Tìm kiếm sản phẩm" />
                                 </Form.Item>
-                                <Form.Item
-                                    label="Status"
-                                    name="is_sold"
-                                >
-                                    <Select defaultValue={""} onChange={handleStatusChange}>
-                                        <Select.Option value="" selected>All</Select.Option>
-                                        <Select.Option value={false}>Not sold</Select.Option>
-                                        <Select.Option value={true}>Sold</Select.Option>
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item name="price" label="Initial price">
-                                    <br />
-                                    <Slider onChange={handlePriceChange} range min={1} max={1000} marks={marks} defaultValue={[0, 100]} />
-                                </Form.Item>
+                                <div >
+                                    <Form.Item
+                                        labelAlign='l'
+                                        label="Trạng thái"
+                                        name="is_sold"
+                                    >
+                                        <div>
+                                            <Select defaultValue={""} onChange={handleStatusChange}>
+                                                <Select.Option value="" selected>Tất cả</Select.Option>
+                                                <Select.Option value={false}>Chưa bán</Select.Option>
+                                                <Select.Option value={true}>Đã bán</Select.Option>
+                                            </Select>
+                                        </div>
+                                    </Form.Item>
+                                </div>
+                                <div >
+                                    <Form.Item
+                                        labelAlign='l'
+                                        label="Sắp xếp"
+                                        name="sort"
+                                    >
+                                        <div>
+                                            <Select defaultValue={""} onChange={handleSortChange}>
+                                                <Select.Option value="" selected>Mặc định</Select.Option>
+                                                <Select.Option value={"init_price:ascend"}>Giá từ thấp đến cao</Select.Option>
+                                                <Select.Option value={"init_price:descend"}>Giá từ cao xuống thấp</Select.Option>
+                                            </Select>
+                                        </div>
+                                    </Form.Item>
+                                </div>
                             </Form>
                         </div>
                         <div>
-                            <h1 className='text-3xl py-4'>Relate auctions</h1>
+                            <h1 className='text-2xl py-4'>Phiên đấu giá liên quan</h1>
                             <ul className='list-none px-4'>
-                                {auctions.map((auction,idx)=>{
-                                    if(auction.id === id)
-                                    {
-                                        return <li key={idx} className='hover:list-disc mt-4 text-3xl border-b-4 pb-3'><span>{auction.name}</span></li>;
-                                    }else 
-                                    {
+                                {auctions.map((auction, idx) => {
+                                    if (auction.id === id) {
+                                        return <li key={idx} className='hover:list-disc mt-4 text-2xl border-b-4 pb-3'><span>{auction.name}</span></li>;
+                                    } else {
                                         return <li key={idx} className='hover:list-disc mt-4 text-xl border-b-4 pb-3'><a href={`/auction/${auction.id}`}>{auction.name}</a></li>
                                     }
                                 })}
@@ -172,7 +180,7 @@ const AuctionDetail = () => {
                         </div>
 
                     </div>
-                    
+
                     <LotItems lots={lots} />
                 </div>
 

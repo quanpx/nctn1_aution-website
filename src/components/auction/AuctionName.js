@@ -1,6 +1,10 @@
 import React from 'react';
 import "./Auction.css"
 import { useSelector } from 'react-redux';
+import moment from 'moment';
+import "moment/locale/vi";
+import { Button } from 'antd';
+
 const AuctionName = ({ auction }) => {
     const data = auction.auction;
     const newWindowStream = () => {
@@ -9,22 +13,22 @@ const AuctionName = ({ auction }) => {
     }
     const generateLinkStream = () => {
         if (data.status == 'start') {
-            return <p className='text-base p-3'> <b>The live is starting. You can join now!</b> <br />
-                 <button onClick={(e) => { e.preventDefault() ; window.open( `/auction-stream/${data.id}`, '_blank', 'location=yes,height=800,width=900,scrollbars=yes,status=yes')}}>
-                Go to live
-            </button>
-            </p>
+            return <div>
+                <p className='text-sm'> <b>Phiên đấu giá đã bắt đầu bạn có thể tham gia ngay</b> <br /></p>
+                 <Button type='primary' onClick={(e) => { e.preventDefault() ; window.open( `/auction-stream/${data.id}`, '_blank', 'location=yes,height=800,width=900,scrollbars=yes,status=yes')}}>
+                Tham gia ngay
+            </Button>
+            </div>
+            
         } else if (data.status == 'end') {
-            return <h2 className='text-red-800'>! This auction had already finished! Please back soon.</h2>
+            return <h2 className='text-red-800'>Phiên đấu giá đã két thúc.</h2>
         }
     }
     return (
-        <div className="auction-detail-info">
+        <div className='basis-2/3'>
            
     
-            <h5>{data.start_time}-
-                Los Angeles, CA, United States
-                Auction Details</h5>
+            <p>Phiên đấu giá được diễn ra lúc: <b><i>{moment(data.start_time).format("LLLL")}</i></b></p>
             <h2>{data.name}</h2>
             <p>{data.description}</p>
             {generateLinkStream()}

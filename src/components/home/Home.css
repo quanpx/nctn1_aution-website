@@ -1,10 +1,18 @@
+@font-face {
+    font-family: 'frank-rulh';
+    src:  url("/public/font/Frank_Ruhl_Libre/FrankRuhlLibre-VariableFont_wght.ttf") format('ttf')
+        
+  }
 .introduction {
     
-    background-image: url("/public/images/introduction.jpg");
+    background-image: url("/public/images/Octagonal-boxed-16-9-1-2048x1152.jpg");
     background-size:  cover;
     height: 600px;
     width:fit-content;
     background-repeat: no-repeat;
     opacity: 80%;
    
+}
+.custFont {
+    font-family: "frank rulh";
 }

@@ -23,6 +23,7 @@ import YourAuctions from './pages/profile/YourAuctions';
 import YourItems from './pages/profile/YourItems';
 import Test from './test/Test';
 import Payment from './pages/payment/Payment';
+import "moment/locale/vi";
 function App() {
   return (
     <Routes>

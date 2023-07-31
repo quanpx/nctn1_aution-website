@@ -4,7 +4,7 @@ const StayConnect = () => {
     const [form] = Form.useForm();
     const [formLayout, setFormLayout] = useState('inline');
     return (
-        <div className="m-10 flex flex-row gap-x-10">
+        <div className="m-10 flex flex-row gap-x-10 border-t-4 pt-10">
            <div className="w-full">
                 <img className="px-20 hover:scale-110 transition duration-100" src={process.env.PUBLIC_URL + '/images/signup.jpg'} height="auto"/>
                 <div className="mt-2 p-5 mx-2s">

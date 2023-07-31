@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux/es/exports';
 
 
-import { Card, notification } from 'antd';
+import { Card, Tooltip, notification } from 'antd';
 import "./LotItems.css";
 import "../auction/Auction.css"
 import { useAuth } from '../../hooks/useAuth';
@@ -12,11 +12,11 @@ import axios from 'axios';
 import { ADD_2_FAVORITE } from '../../config/server';
 const { Meta } = Card;
 const LotInfo = ({ lot }) => {
-    const {isAuth,token} = useAuth();
+    const { isAuth, token } = useAuth();
     const [isLoved, setIsLoved] = useState(false)
     const navigate = useNavigate()
-  
-    useEffect(() => setIsLoved(lot.is_favorited),[lot])
+
+    useEffect(() => setIsLoved(lot.is_favorited), [lot])
     const config = {
         headers: {
             "Content-Type": "application/json",
@@ -29,18 +29,18 @@ const LotInfo = ({ lot }) => {
         if (!isAuth) {
             navigate("/login")
         }
-        let des = isLoved ? "Remove "+lot.name+" from your favorite" : 'Add '+ lot.name+' to your favorite'
-        let mess = isLoved ? "Remove from favorite" : "Add to favorite"
-        
-        
-        await axios.get(ADD_2_FAVORITE+lot.id,config)
-        .then(res => {
-            notification.open({
-                message: mess,
-                description:des
-              });
-        })
-        .catch(err=> console.log(err))
+        let des = isLoved ? "Bạn đã xóa " + lot.name + " khỏi danh sách yêu thích" : 'Bạn đã thêm ' + lot.name + ' vào danh sách yêu thích'
+        let mess = isLoved ? "Xóa khỏi danh sách yêu thích" : "Thêm vào danh sách yêu thích"
+
+
+        await axios.get(ADD_2_FAVORITE + lot.id, config)
+            .then(res => {
+                notification.open({
+                    message: mess,
+                    description: des
+                });
+            })
+            .catch(err => console.log(err))
 
         setIsLoved(!isLoved)
     }
@@ -56,11 +56,9 @@ const LotInfo = ({ lot }) => {
         return false;
     }
     return (
-        <div className='w-1/4'>
+        <div className='w-5/12 p-7'>
             <Card
-                style={{
-                    width: "90%",
-                }}
+                className='flex flex-col'
                 cover={
                     <img
                         height="150"
@@ -68,32 +66,30 @@ const LotInfo = ({ lot }) => {
                         src={lot.image_url}
                     />
                 }
-                // actions={lot.is_sold &&[
-                //     <h4>Sold: {lot.sold_price}$</h4>,]
-                // ] : checkBidded(lot.id) ?
-                //     [
 
-                //         <HeartOutlined key="ellipsis" onClick={() => handleLoveItem(lot.id)} />,
-                //         <MoneyCollectOutlined key="bid" />,
-
-                //     ] : [
-                //         <HeartOutlined key="ellipsis" onClick={() => handleLoveItem(lot.id)} />,
-                //         <MoneyCollectOutlined key="bid" onClick={() => handleBidItem(lot.id)} />,
-
-                //     ]}
-               // }
             >
                 <Meta
-                    title={<Link to={"/lot/" + lot.id}>{lot.name}</Link>}
-                    description={`Est. ${lot.estm_price}`}
+
+                    title={<Link className='text-sm' to={"/lot/" + lot.id}>{lot.name}</Link>}
+                    description={`Ước tính: ${lot.estm_price}`}
+
                 />
-                <h3>Initial price: {lot.init_price}</h3>
-                {lot.is_sold &&<h4>Sold: {lot.sold_price}$</h4>}
-                {checkBidded(lot.id) && <h1>Bidded</h1>}
-                {lot.is_next ? <h1 id="next-title">Next</h1>:<h1></h1>}
-                { !isLoved ? <HeartOutlined  key="ellipsis" onClick={() => handleLoveItem(lot.id)}/>
-                : <HeartFilled onClick={() => handleLoveItem(lot.id)} />
-            }
+                <span>Giá khởi điểm: {lot.init_price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</span>
+                {lot.is_sold && <h4>Đã bán: {lot.sold_price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</h4>}
+                {checkBidded(lot.id) && <h1>lượt đặt giá</h1>}
+                {lot.is_next ? <h1 id="next-title">Tiếp theo</h1> : <h1></h1>}
+                <div className='justify-self-center'>
+                    {!isLoved ?
+                        <Tooltip placement="top" title={"Thêm vào mục yêu thích"}>
+                            <HeartOutlined key="ellipsis" twoToneColor="#eb2f96" className='text-2xl' onClick={() => handleLoveItem(lot.id)} />
+                        </Tooltip>
+                        : <Tooltip placement="top" title={"Xóa khỏi mục yêu thích"}>
+                            <HeartFilled width={50} height={50} onClick={() => handleLoveItem(lot.id)} />
+                        </Tooltip>
+
+                    }
+                </div>
+
             </Card>
         </div>
     )

@@ -8,6 +8,7 @@ import "./Auction.css"
 import AuctionItem from "./AuctionItem";
 import { useAuth } from "../../hooks/useAuth";
 import DateTimePicker from "react-datetime-picker";
+import { handleLoading } from "../../utils/renderUtils";
 
 
 const hour = 100; // For check state of auction
@@ -16,12 +17,12 @@ const Auctions = ({ paging }) => {
   const [data, setData] = useState(null);
   const [auctions, setAuctions] = useState([])
   const [loading, setLoading] = useState(true)
-  const { token,isAuth } = useAuth();
+  const { token, isAuth } = useAuth();
   const [registedAuctions, setRegistedAuctions] = useState([])
   const [form] = Form.useForm()
-  const text =Form.useWatch('text',form)
-  const status = Form.useWatch('status',form)
-  const date = Form.useWatch('date',form)
+  const text = Form.useWatch('text', form)
+  const status = Form.useWatch('status', form)
+  const date = Form.useWatch('date', form)
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -34,21 +35,22 @@ const Auctions = ({ paging }) => {
   // useEffect (()=> {
   //   fetchAuctions()
   // },[registedAuctions])
-
   useEffect(() => {
     fetchAuctions();
-  }, [loading])
+  }, [registedAuctions])
+  
+  useEffect(() => {
 
-  useEffect(()=>{
-
-    
     fetchRegisteredAuctions()
-  },[])
+  }, [])
 
+  
+
+ 
 
   const fetchAuctions = async (config) => {
     try {
-      const { data } = await axios.get(AUCTION_URL,config)
+      const { data } = await axios.get(AUCTION_URL, config)
       let temp = data.auctions.map(auction => {
         let registed = checkRegistered(auction.id)
         return { ...auction, is_registed: registed }
@@ -67,7 +69,7 @@ const Auctions = ({ paging }) => {
 
     for (var i = 0; i < registedAuctions.length; i++) {
       let item = registedAuctions[i];
-      console.log(item,id);
+      console.log(item, id);
       if (item.auction.id === id) {
         return true;
       }
@@ -76,10 +78,9 @@ const Auctions = ({ paging }) => {
 
   }
   const fetchRegisteredAuctions = async () => {
-    console.log(isAuth);
-    if(!isAuth)
-    {
-      return ;
+   
+    if (!isAuth) {
+      return;
     }
     try {
 
@@ -102,44 +103,44 @@ const Auctions = ({ paging }) => {
   }
 
   const resolveParams = () => {
-    
-    return {text,status,start_time:date}
+
+    return { text, status, start_time: date }
   }
-  
-  const handleTextChange = async ()=>
-  {
+
+  const handleTextChange = async () => {
     const params = resolveParams()
 
-    await fetchAuctions({params})
+    await fetchAuctions({ params })
   }
-  const handleValueChange = async (status)=>
-  {
+  const handleValueChange = async (status) => {
     console.log(status);
     const params = resolveParams()
     params.status = status
     console.log(params);
-    await fetchAuctions({params})
+    await fetchAuctions({ params })
 
   }
-  const handleDateChange = async (date,dateString)=>
-  {
+  const handleDateChange = async (date, dateString) => {
     console.log(dateString);
-    const start = new Date( dateString ? dateString : '2000-01-01').getTime()
+    const start = new Date(dateString ? dateString : '2000-01-01').getTime()
     const params = resolveParams()
     params.start_time = start
     console.log(params);
-    await fetchAuctions({params})
+    await fetchAuctions({ params })
 
   }
+
+  handleLoading(loading);
+
   return (
     <>
-      {!loading ? <div className="flex flex-row gap-2" >
+      <div className="flex flex-row gap-2" >
         {data != null ?
           <>
-            <div className="filter-side basis-1/3 pl-2 border-r-4">
-              <h2 className="relative left-1/4 text-3xl py-3" >Filter Anything</h2>
+            <div className="basis-1/3 pl-2 border-r-4">
+              <h2 className="relative left-1/4 text-3xl py-3" >Bộ lọc</h2>
               <Form
-              
+
                 form={form}
                 labelCol={{
                   span: 4,
@@ -149,35 +150,41 @@ const Auctions = ({ paging }) => {
                 }}
                 layout="horizontal"
               >
-                <Form.Item 
-                label="Text"
-                name="text"
-                
-                >
-                  <Input onKeyUp={handleTextChange} placeholder="Search for auction"/>
-                </Form.Item>
-                <Form.Item 
-                label="Status"
-                name="status"
-                >
-                  <Select defaultValue={""} onChange={handleValueChange}>
-                  <Select.Option value="" selected>All</Select.Option>
-                    <Select.Option value="active">Active</Select.Option>
-                    <Select.Option value="start">Start</Select.Option>
-                    <Select.Option value="end">End</Select.Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item 
-                label="Date"
-                name="date"
+                <Form.Item
+                  labelAlign="l"
+                  label="Tìm kiếm"
+                  name="text"
 
                 >
-                  <DatePicker onChange={handleDateChange}/>
+                  <Input onKeyUp={handleTextChange} placeholder="Tìm kiếm phiên đấu giá" />
+                </Form.Item>
+
+                <Form.Item
+                  labelAlign="l"
+                  label="Trạng thái"
+                  name="status"
+                >
+                  <Select defaultValue={"active"} onChange={handleValueChange}>
+                    <Select.Option value="active" selected>Đang mở đăng ký</Select.Option>
+                    <Select.Option value="start">Đang diễn ra</Select.Option>
+                    <Select.Option value="end">Kết thúc</Select.Option>
+                  </Select>
+                </Form.Item>
+
+                <Form.Item
+                  labelAlign="l"
+                  label="Thời gian"
+                  name="date"
+                  wrapperCol={14}
+
+
+                >
+                  <DatePicker placeholder="Thời gian diễn ra" onChange={handleDateChange} />
                 </Form.Item>
               </Form>
             </div>
             <div className=' basis-2/3 px-4'>
-              <h1 className="text-base">{data.count} results</h1>
+              <h1 className="text-base">{data.count} phiên đấu giá</h1>
               <div className='flex flex-col justify-items-center gap-2'>
                 {auctions.map((item, idx) => {
                   let handledItem = { ...item, is_new: checkIsNew(item.start_time) }
@@ -195,7 +202,7 @@ const Auctions = ({ paging }) => {
           </>
           : <h1>Wait</h1>}
 
-      </div> : <h1>Loading....</h1>}
+      </div>
     </>
 
   )

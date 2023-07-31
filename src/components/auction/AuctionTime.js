@@ -43,9 +43,7 @@ const AuctionTime = ({auction}) => {
 
             notification.success({
                 message: `Tin nhắn`,
-                description:
-                    `Bạn đã đăng ký phiên đấu giá. Chúng tôi đã gửi email để xác nhận đăng ký của bạn.`,
-                placement: "bottomLeft"
+                description:`Bạn đã đăng ký phiên đấu giá. Chúng tôi đã gửi email để xác nhận đăng ký của bạn.`
             });
 
         }catch (error)
@@ -55,32 +53,32 @@ const AuctionTime = ({auction}) => {
     }
     return (
         <div className="auction-time">
-            <h5>LIVE BIDDING STARTS IN:</h5>
+            <h5>Phiên đấu giá bắt đấu sau:</h5>
             <div className="countdown-time">
                 <div className="auction-time-element">
                     <div className="value">{days}</div>
-                    <div className="value-label">DAY</div>
+                    <div className="value-label">Ngày</div>
                 </div>
                 <div className="colon">:</div>
                 <div className="auction-time-element">
                     <div className="value">{hours}</div>
-                    <div className="value-lalel">HR</div>
+                    <div className="value-lalel">Giờ</div>
                 </div>
                 <div className="colon">:</div>
                 <div className="auction-time-element">
                     <div className="value">{minutes}</div>
-                    <div className="value-lalel">MIN</div>
+                    <div className="value-lalel">Phút</div>
                 </div>
                 <div className="colon">:</div>
                 <div className="auction-time-element">
                     <div className="value">{seconds}</div>
-                    <div className="value-lalel">SEC</div>
+                    <div className="value-lalel">Giây</div>
                 </div>
             </div>
-            <div className="auction-time-buttons">
+            <div className="mt-2">
                 {isRegistered ?
-                    <button className="auction-time-button-register text-xl p-4 text-green-800" disabled={isRegistered}>You Registered!</button> :
-                    <Button type="primary" onClick={handleRegister}>Register for auction</Button>}
+                    <Button className="auction-time-button-register text-xl p-4 text-green-800" disabled={isRegistered}>Đã đăng ký</Button> :
+                    <Button type="primary" onClick={handleRegister}>Đăng ký phiên đấu giá</Button>}
 
             </div>
         </div>

@@ -6,7 +6,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { AUCTION_URL, BID_IN_AUCTION, JOIN_AUCTION } from "../../config/server";
 import UpperStreamPart from "./UpperStreamPart";
 import { io } from "socket.io-client";
-import { Button, Modal, notification } from "antd";
+import { Button, Modal, Skeleton, notification } from "antd";
 import { useAuth } from "../../hooks/useAuth";
 import StreamFunction from "./StreamFunction";
 import SockJS from "sockjs-client";
@@ -34,7 +34,7 @@ const AuctionStream = () => {
     const [nextIdx, setNextIdx] = useState()
     const [joined, setJoined] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { user, token, role, isAuth } = useAuth();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -95,7 +95,7 @@ const AuctionStream = () => {
                     case 'lot-sold':
                         //todo : message to user win lot
                         const { lot } = info
-                        console.log(currLot,lot);
+                        console.log(currLot, lot);
                         notification.open(
                             {
                                 description: "Bạn đã thắng sản phẩm " + lot.name
@@ -179,7 +179,7 @@ const AuctionStream = () => {
                     <StreamFunction auctionInfo={auctionInfo} />
                 </div>
                 <div className="lower-stream-page">
-                    <LotList lots={auctionInfo.lots} next={nextIdx} title={"Next Lots"}></LotList>
+                    <LotList lots={auctionInfo.lots} next={nextIdx} title={"Sản phẩm tiếp theo"}></LotList>
                 </div>
             </div>
         } else {
@@ -202,22 +202,62 @@ const AuctionStream = () => {
     if (!joined) {
         return <Popup
             content={<div className="absolute top-1/2 left-1/2 -mr-1/2 -translate-x-1/2 -translate-y-1/2">
-                <b>Welcome to auction stream</b>
-                <p>Do you want to join now?</p>
+                <b className="text-xl">Chào mừng bạn</b>
+                <p>Hãy tham gia ngay bây giờ</p>
                 {/* <Button className="mr-2" type="primary" onClick={togglePopup}>Join Now</Button> */}
-                <Button type="danger" onClick={() => navigate("/")}>Back</Button>
+                <div className="flex flex-row gap-x-4">
+                <Button type="danger" onClick={() => navigate("/")}>Trở về</Button>
                 <Loading loading={loading} content={<Button className="mr-2" type="primary" onClick={() => {
                     setLoading(!loading)
                     setTimeout(() => togglePopup()
                         , 4000)
-                }}>Join Now</Button>} />
+                }}>Tham gia</Button>} />
+                </div>
             </div>}
             handleClose={togglePopup} />
     }
+
+    if (auctionInfo === null) {
+        return <div>
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+        </div>
+
+    }
+
+    const handleOnOk = () => {
+        setTimeout(() => {
+            setIsModalOpen(false)
+            navigate("/profile/items")
+        }, 2000)
+
+
+    }
+
+    const handleOnCancel = () => {
+        setTimeout(() => {
+            setIsModalOpen(false)
+            navigate("/")
+        }, 2000)
+
+    }
+
     return (
         <>
-            {auctionInfo != null ?
-                renderAuctionStreamScreen() : <h1>Loading</h1>}
+            {renderAuctionStreamScreen()}
+            <Modal
+                title={<h1 className="text-green-400 text-3xl">Phiên đấu giá kết thúc</h1>}
+                centered
+                visible={isModalOpen}
+                onOk={() => handleOnOk()}
+                onCancel={() => handleOnCancel()}
+                okText="Xem sản phẩm"
+                cancelText="Về trang chủ"
+            >
+                Phiên đấu giá đã kết thúc. Cảm ơn bạn đã tham gia
+                <p>Hẹn gặp lại bạn trong nhưng phiên sắp tới</p>
+            </Modal>
         </>
 
     )

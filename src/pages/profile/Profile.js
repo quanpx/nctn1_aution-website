@@ -7,20 +7,20 @@ const Profile= () => {
                 <h1 className="text-2xl p-2 mt-20 ml-5">Profile</h1>
                 <ul className="flex gap-y-5 flex-col pl-5">
                     <li>
-                        <Link to={"favorites"}>Your favorites</Link>
+                        <Link to={"favorites"}>Sản phẩm yêu thích</Link>
                     </li>
                     <li>
-                        <Link to={"auctions"}>Your auctions</Link>
+                        <Link to={"auctions"}>Phiên đấu đăng ký</Link>
                     </li>
                     <li>
-                        <Link to={"items"}>Your items</Link>
+                        <Link to={"items"}>Sản phẩm đã thắng</Link>
                     </li>
                     <hr/>
                     <li>
-                        <Link to={"editprofile"}>Edit Profile</Link>
+                        <Link to={"editprofile"}>Sửa thông tin</Link>
                     </li>
                     <li>
-                        <Link to={"logout"}>Logout</Link>
+                        <Link to={"logout"}>Đăng xuất</Link>
                     </li>
                    
                 </ul>

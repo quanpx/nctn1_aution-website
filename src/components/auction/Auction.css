@@ -29,8 +29,8 @@
     font-size: 16px;
     letter-spacing: 2px;
     z-index: 1;
-    left: 0;
-    top: 0;
+    left: 5px;
+    top: 5px;
     background-color: rgb(228, 234, 228);
     padding: 2px 3px 2px 3px;
     -webkit-animation: my 700ms infinite;

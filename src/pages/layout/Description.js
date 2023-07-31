@@ -59,8 +59,8 @@ const Description = () => {
   return (
     <div className="description">
       <div className="form-join">
-        <h1 style={{fontSize:'45px'}}>Chào mừng đến  <br/> thế giới đồ mỹ nghệ</h1>
-        <p style={{fontSize:'20px',fontStyle:'italic'}}>Để lại email, chúng tôi sẽ gửi những món đồ giá trị mà bạn quan tâm</p>
+        <h1 className="font-custom" style={{fontSize:'45px'}}>Chào mừng đến  <br/> thế giới đồ mỹ nghệ</h1>
+        <p className="font-custom" style={{fontSize:'20px',fontStyle:'italic'}}>Để lại email, chúng tôi sẽ gửi những món đồ giá trị mà bạn quan tâm</p>
         <Search
           placeholder="Email"
           enterButton="Đăng ký"

@@ -28,11 +28,15 @@ const AuctionDashboard = () => {
 
     if(data === null)
     {
-        return <h1>Loading</h1>
+        return <div>
+          <Skeleton active/>
+          <Skeleton active/>
+          <Skeleton active/>
+        </div>
     }
-    return <div className="flex flex-col gap-y-5 mt-20 ">
-        <h1 className="text-2xl"><Link to={'/admin/createAuction'}>Create Auction</Link></h1>
-        {data.auctions.map((auction,idx)=> <AuctionCard auction={auction}/>)}
+    return <div className="flex flex-col gap-y-5 mt-5 ">
+        <h1 className="text-2xl ml-2"><Link to={'/admin/createAuction'}>Tạo phiên đấu giá mới</Link></h1>
+        {data.auctions.map((auction,idx)=> <AuctionCard auction={auction} key={idx}/>)}
     </div>
 
 }

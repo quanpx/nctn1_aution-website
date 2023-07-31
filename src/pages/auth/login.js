@@ -74,32 +74,24 @@ const Login = () => {
               className="login-img"
               src={process.env.PUBLIC_URL + "/images/login.png"}
             />
-            <h1 style={{ fontSize: "40px", fontStyle: "italic" ,marginLeft:'10px'}}>
+            <h1 className="text-2xl ml-3">
              
-              New User ?
+              Bạn là người mới ?
             </h1>
             <p style={{ width: "80%" ,marginLeft:'10px'}}>
-              <b>
-                Join and enjoy all the benefits: its easy and free. Creating an
-                account allows you to watch all Drouot sales
-              </b>
+              
+              Tham gia và trải nghiệm những lợi ích website mang lại. Nó hoàn toán miễn phí và dễ dàng sử dụng
+
+            
             </p>
 
-              <button onClick={()=>navigate("/signup")} type="submit">Create new account</button>
+              <button className="p-1" onClick={()=>navigate("/signup")} type="submit">Tạo tài khoản mới</button>
           
           </div>
         </div>
         <div className="right-side-login">
           <div className="right-side-login-google-login">
-            <h1 id="login-with-google-title" style={{ fontSize: "24px" }}>
-              {" "}
-              Sign in with
-            </h1>
-            <img
-              className="google-login m-auto"
-              src={process.env.PUBLIC_URL + "/images/search.png"}
-            />
-            <br />
+           
             <br />
             <hr style={{ width: "60%", color: "black" }} />
           </div>
@@ -107,13 +99,13 @@ const Login = () => {
             className="right-side-login-default-title"
             style={{ position: "relative", left: "45%" }}
           >
-            <h1 style={{ fontSize: "18px" }}>or sign in </h1>
+            <h1 style={{ fontSize: "18px" }}>Đăng nhập </h1>
           </div>
-          <div className="right-side-login-default-login">
+          <div className="pl-20">
           <Form
       name="basic"
       labelCol={{
-        span: 8,
+        span: 6,
       }}
       wrapperCol={{
         span: 12,
@@ -126,8 +118,9 @@ const Login = () => {
       autoComplete="off"
     >
       <Form.Item
-        label="Username"
+        label="Tên người dùng"
         name="username"
+        labelAlign='left'
         rules={[
           {
             required: true,
@@ -139,8 +132,9 @@ const Login = () => {
       </Form.Item>
 
       <Form.Item
-        label="Password"
+        label="Mật khẩu"
         name="password"
+        labelAlign='left'
         rules={[
           {
             required: true,
@@ -152,24 +146,13 @@ const Login = () => {
       </Form.Item>
 
       <Form.Item
-        name="remember"
-        valuePropName="checked"
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item
         wrapperCol={{
           offset: 8,
           span: 16,
         }}
       >
         <Button type="primary" htmlType="submit">
-          Sign In
+          Đăng nhập
         </Button>
       </Form.Item>
     </Form>

@@ -40,7 +40,7 @@ const Home = () => {
     return (
          <div className='flex flex-col'>
             <Description />
-            <h2 className='text-base text-red-800 mt-5 p-2'> Phiên đấu giá mới <a href='/auctions'><span>Tất cả</span></a></h2>
+            <h2 className='text-2xl text-red-800 mt-5 p-2'> Phiên đấu giá mới <a href='/auctions'><span>Tất cả</span></a></h2>
             <AuctionDemo />
             <Introduction/>
             <StayConnect/>

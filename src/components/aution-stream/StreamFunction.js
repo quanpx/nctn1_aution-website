@@ -41,18 +41,22 @@ const StreamFunction = ({ auctionInfo }) => {
 
     }
 
-    const handleEnd = async () => {
-        const body = {
-            id: auctionInfo.auction.id,
-            status: "end"
-        }   
-        try {
-            await axios.post(UPDATE_AUCTION_STATUS, body, configs)
-         
-        }
-        catch (error) {
-            console.log(error)
-        }
+    const handleEnd =  () => {
+
+        setTimeout(async ()=>{
+            const body = {
+                id: auctionInfo.auction.id,
+                status: "end"
+            }   
+            try {
+                await axios.post(UPDATE_AUCTION_STATUS, body, configs)
+             
+            }
+            catch (error) {
+                console.log(error)
+            }
+        },2000)
+        
     }
 
     const resolveStreamFunction = () => {
@@ -107,7 +111,7 @@ const StreamFunction = ({ auctionInfo }) => {
                 <p style={{ paddingLeft: '15px', paddingRight: '25px' }}>
                     {auctionInfo.auction.description}
                 </p>
-                <h1 className="text-red-500">The auction ended!. Please comeback soon!</h1>
+                <h1 className="text-red-500">Phiên đấu giá đã kết thúc. Vui lòng quay lại sau</h1>
                 
                
             </div>

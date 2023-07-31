@@ -49,9 +49,9 @@ const LotItems = ({ lots }) => {
     
   
     return (
-        <div className="basis-2/3  pl-6 pr-4">
-            <h1 className="text-base">{lots.length} results</h1>
-            <div className='flex flex-row flex-wrap justify-between justify-items-center gap-2'>
+        <div className="basis-3/4  pl-6 pr-4">
+            <h1 className="text-base">Tìm thấy {lots.length} sản phẩm</h1>
+            <div className='flex flex-row flex-wrap justify-between justify-items-center gap-2 border border-t-4 pt-5'>
                 {modifiedItems.map((lot, idx) => <LotInfo key={idx} lot={lot} />)}
             </div>
 

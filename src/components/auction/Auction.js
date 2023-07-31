@@ -28,9 +28,6 @@ const Auction = ({ aution }) => {
           description={`${aution.num_item} sản phẩm - ${aution.register_num} đăng ký `}
         />
 
-        <Button className="absolute bottom-0 right-1 bg-cyan-800 mt-2">
-          <HeartOutlined key="heart" /> <span className="text-red-500">Quan tâm</span>
-        </Button>
       </Card>
     </div>
   );

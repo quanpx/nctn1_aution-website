@@ -43,6 +43,7 @@ const PriceInput = ({ value = {}, onChange,price,isBid }) => {
         style={{
           width: 100,
         }}
+        placeholder="Giá đặt tối đa"
       />
       <Select
         value={value.currency || currency}

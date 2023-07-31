@@ -121,22 +121,22 @@ const BidList = ({ auction, curr, stompClient }) => {
     return (
         <div className="bid-info-part">
             <div className="list-bids">
-                <h4>Bids for lot</h4>
+                <h4>Thông tin giá đấu</h4>
                 {bids.length > 0 ? <div className="bid-info">
                     {bids.map((bid, idx) => <BidInfo key={idx} bid={bid} />)}
-                </div> : <span>No any bids</span>}
+                </div> : <span>Hiện tại chưa có giá đặt</span>}
             </div>
             {role != "admin" &&
-                <> <span style={{ padding: '10px', fontStyle: 'oblique' }}>When auction starting, you can bid multiple price</span>
+                <> <span style={{ padding: '10px', fontStyle: 'oblique' }}>Khi phiên đấu giá bắt đầu bạn có thể đặt giá nhiều lần</span>
                     <div className="bid-function">
                         <Button disabled={resolveDisableBidButton()} onClick={handleBidWithAutoPrice} style={!disable ? { width: '100%', marginBottom: '5px', backgroundColor: 'green' }
                             : { width: '100%', marginBottom: '5px', backgroundColor: 'red' }}>
                             {curr.current_price + priceStep} $ Bid</Button><br />
-                        <label>Price: </label>
+                        <label>Giá: </label>
                         <Input disabled={resolveDisableBidButton()} type='text' onChange={(e) => setPrice(parseInt(e.target.value))} />
 
                         <Button disabled={resolveDisableBidButton()} style={{ 'float': 'right', 'marginTop': '5px' }} type="primary" onClick={handleBid}>
-                            Bid
+                            Đặt giá
                         </Button>
                     </div>
                 </>

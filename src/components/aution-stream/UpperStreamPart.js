@@ -39,8 +39,7 @@ const UpperStreamPart = ({onNextButton, auctionInfo, stompClient }) => {
             } else {
                 return <div>
                  Đang xem: {numUsers} <EyeOutlined />
-                    <p>Status: {auctionInfo.auction.status}</p> 
-                    <p>Current price: {currPrice} $</p>
+                    <p>Giá hiện tại: {currPrice} $</p>
                 </div>
             }
         }

@@ -36,7 +36,7 @@ const Favorite = () => {
 
     return <div className="flex flex-row">
     <div className="flex flex-col gap-x-5 basis-3/4">
-        <h1 className="text-2xl mt-20">My Favorites</h1>
+        <h1 className="text-2xl mt-20">Sản phẩm yêu thích</h1>
     { favorites.map((item,idx)=> {
         return <div className="flex flex-row gap-x-10 mt-5 border-t-2 border-black-700 pt-5 pl-5">
             <FavoriteItem key={idx} lot={item}/>
